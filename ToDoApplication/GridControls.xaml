@@ -1,0 +1,49 @@
+﻿<Window x:Class="ToDoApplication.GridControls"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ToDoApplication"
+        mc:Ignorable="d"
+        Title="GridControls" Height="450" Width="800">
+	<Grid x:Name="rootGrid" Margin="30">
+		<Grid.ColumnDefinitions>
+			<!--TextBox + TodoList-->
+			<ColumnDefinition Width="*"/>
+			<!--Button + InActive List -->
+			<ColumnDefinition Width="*"/>
+			<!-- DoneList-->
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<!-- header -->
+			<RowDefinition Height="Auto" />
+			<!-- TextBox + AddButton -->
+			<RowDefinition Height="Auto"/>
+			<!-- TextBlock List -->
+			<RowDefinition Height="Auto"/>
+			<!--  List Box -->
+			<RowDefinition Height="*"/>
+			<!--  Button activity -->
+			<RowDefinition Height="Auto"/>
+
+		</Grid.RowDefinitions>
+		<!-- header -->
+		<TextBlock Text="To-do Managment" FontSize="32" Grid.ColumnSpan="3" HorizontalAlignment="Center" />
+		<!-- TextBox + AddButton -->
+		<TextBox  Grid.Row="1" Grid.Column="0" Name="txtTodo"  Margin="10"/>
+		<Button  Grid.Row="1" Grid.Column="1" Name="addButton" Content="AddTo-List" Margin="10" Click="btnAddToList"/>
+
+		<TextBlock Text="To-do List" FontSize="14" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" />
+		<TextBlock Text="InActive List" FontSize="14" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" />
+		<TextBlock Text="Done" FontSize="14" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Center" />
+		<!-- ToDo List -->
+		<ListBox x:Name="lstTodo"   Grid.Row="3" Grid.Column="0" Background="Gray" Margin="10" />
+		<ListBox x:Name="lstActive"   Grid.Row="3" Grid.Column="1"  Background="Yellow" Margin="10" />
+		<ListBox x:Name="lstDone"   Grid.Row="3" Grid.Column="2" Background="Green" Margin="10" />
+		<!--button activity-->
+		<Button  Grid.Row="4" Grid.Column="0" Name="btnMoveActive" Content="Move to Active" Margin="20,0,20,0" Click="btnMoveActiveData"/>
+		<Button  Grid.Row="4" Grid.Column="1" Name="btnMoveDOne" Content="Move to Done" Margin="20,0,20,0" Click="btnMoveDoneData"/>
+		<Button  Grid.Row="4" Grid.Column="2" Name="btnRemove" Content="Remove From Done" Margin="20.2,0.2,19.6,0" Click="btnRemoveDoneData"/>
+	</Grid>
+</Window>

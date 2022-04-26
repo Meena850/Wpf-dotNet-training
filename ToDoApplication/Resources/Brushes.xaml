@@ -1,0 +1,9 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+	<SolidColorBrush x:Key="ButtonMainBrush" Color="#6002EE" />
+	<SolidColorBrush x:Key="ButtonMouseOverBrush" Color="#A774F3" />
+	<SolidColorBrush x:Key="ButtonIsDisabledBrush" Color="#E1DCE9" />
+	<SolidColorBrush x:Key="ButtonIsPressedBrush" Color="#CDB8ED" />
+
+</ResourceDictionary>
