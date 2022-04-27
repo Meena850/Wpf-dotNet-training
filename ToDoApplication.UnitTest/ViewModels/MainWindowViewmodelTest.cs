@@ -3,8 +3,6 @@ using ToDoApplication.ViewModels;
 using ToDoApplication.Model;
 using System;
 using Shouldly;
-using System.Text.Json;
-using ToDoApplication.UnitTest.Fake;
 using System.Linq;
 using ToDoApplication.Repositories;
 using Moq;
