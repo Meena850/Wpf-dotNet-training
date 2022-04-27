@@ -11,7 +11,6 @@ namespace ToDoApplication.Model
 	{
 		public Guid Id { get; set; }
 		public string Name { get; set; }
-
-		public Color Colors { get; set; }
+		public TagColor Color { get; set; }
 	}
 }

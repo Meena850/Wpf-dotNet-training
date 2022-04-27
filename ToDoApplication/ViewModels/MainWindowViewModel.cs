@@ -130,11 +130,13 @@ namespace ToDoApplication.ViewModels
 			
 			if(lastDirection == ListSortDirection.Ascending)
 			{
+				ToListItemsSort.SortDescriptions.Clear();
 				ToListItemsSort.SortDescriptions.Add(new SortDescription(nameof(ToDoItemViewModel.Name), ListSortDirection.Descending));
 				lastDirection = ListSortDirection.Descending;
 			}
 			else
 			{
+				ToListItemsSort.SortDescriptions.Clear();
 				ToListItemsSort.SortDescriptions.Add(new SortDescription(nameof(ToDoItemViewModel.Name), ListSortDirection.Ascending));
 				lastDirection = ListSortDirection.Ascending;
 			}

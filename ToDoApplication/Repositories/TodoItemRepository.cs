@@ -12,7 +12,7 @@ namespace ToDoApplication.Repositories
 {
 	class TodoItemRepository : ITodoItemRepository
 	{
-		private string _directoryPath = @"C:\Jagadeesh\Krones\WPF\WPF_App\ToDoApplication";
+		private string _directoryPath = @"C:\Krones_CRD\TestFiles";
 		private string _fileName = "ToDoItem.json";
 		public List<ToDoItemModel> GetAll()
 		{

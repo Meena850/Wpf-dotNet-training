@@ -10,7 +10,7 @@ namespace ToDoApplication.Repositories
 	class TagRepository : ITagRepository
 	{
 	
-		private string _directoryPath = @"C:\Jagadeesh\Krones\WPF\WPF_App\ToDoApplication";
+		private string _directoryPath = @"C:\Krones_CRD\TestFiles";
 		private string _fileName = "TagItem.json";
 
 		public TagRepository()
@@ -49,10 +49,9 @@ namespace ToDoApplication.Repositories
 			var itemToUpdate = updateinItems.Single(items => items.Id == tagItem.Id);
 			//itemToUpdate.Id = tagItem.Id;
 			itemToUpdate.Name = tagItem.Name;
-			itemToUpdate.Colors= tagItem.Colors;
+			itemToUpdate.Color = tagItem.Color;
 			saveItems(updateinItems);
 		}
-
 		private void saveItems(List<ToDoItemTags> items)
 		{
 			if (!new DirectoryInfo(_directoryPath).Exists)

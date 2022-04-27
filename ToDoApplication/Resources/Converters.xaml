@@ -1,16 +1,17 @@
 ﻿<ResourceDictionary
-	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:Converters="clr-namespace:ToDoApplication.Converters">
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Converters="clr-namespace:ToDoApplication.Converters">
 
-	<Converters:UpercaseConverter x:Key="uppercaseConverter" />
+    <Converters:UpercaseConverter x:Key="uppercaseConverter" />
 
-	<Converters:DateTimeToStringConverter x:Key="dateTimeToStringConverter" />
+    <Converters:DateTimeToStringConverter x:Key="dateTimeToStringConverter" />
 
-	<Converters:BoolToVisiblityConverter x:Key="boolToVisibilityConverter" />
+    <Converters:BoolToVisiblityConverter x:Key="boolToVisibilityConverter" />
 
-	<Converters:NullToVissiblistyCollapsedConverter x:Key="NullToVissiblistyCollapsedConverter" />
+    <Converters:NullToVissiblistyCollapsedConverter x:Key="NullToVissiblistyCollapsedConverter" />
 
-	<Converters:BackgroundColorConverter x:Key="BackgroundColorConverter" />
+    <Converters:BackgroundColorConverter x:Key="BackgroundColorConverter" />
+    <Converters:TagColorConverter x:Key="TagColorConverter" />
 
 </ResourceDictionary>

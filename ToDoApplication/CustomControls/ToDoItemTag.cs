@@ -28,39 +28,6 @@ namespace ToDoApplication.CustomControls
 				new PropertyMetadata("-default-",OnTagTextChanged));
 
 
-		public static readonly DependencyProperty TagColorProperty =
-			DependencyProperty.Register("TagColor", typeof(Color), typeof(ToDoItemTag),
-				new PropertyMetadata(Colors.Black, OnTagColorChanged));
-
-		private static void OnTagColorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-		{
-			((ToDoItemTag)d).OnTagColorChanged();
-		}
-
-		private void OnTagColorChanged()
-		{
-			if (_tagTextBlock != null)
-			{
-
-				Brush brush = new SolidColorBrush(TagColor);
-				_tagTextBlock.Background = brush;
-			}
-		}
-
-		public Color TagColor
-		{
-			get
-			{
-				return (Color)GetValue(TagColorProperty);
-			}
-			set
-			{
-				SetValue(TagColorProperty, value);
-			}
-		}
-
-
-
 		public ICommand RemoveTagCommand
 		{
 			get { return (ICommand)GetValue(RemoveTagCommandProperty); }
@@ -106,8 +73,6 @@ namespace ToDoApplication.CustomControls
 			{
 			
 				_tagTextBlock.Text = TagText.ToUpper();
-				Brush brush = new SolidColorBrush(TagColor);
-				_tagTextBlock.Background = brush;
 			}
 		}
 
