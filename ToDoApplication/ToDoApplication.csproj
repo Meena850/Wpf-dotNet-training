@@ -99,6 +99,7 @@
     <Compile Include="Converters\BoolToVisiblityConverter.cs" />
     <Compile Include="Converters\DateTimeToStringConverter.cs" />
     <Compile Include="Converters\NullToVissiblistyCollapsedConverter.cs" />
+    <Compile Include="Converters\TagColorConverter.cs" />
     <Compile Include="Converters\UpercaseConverter.cs" />
     <Compile Include="CustomControls\testingBackgroiund.cs" />
     <Compile Include="CustomControls\ToDoItemTag.cs" />
@@ -107,6 +108,7 @@
     </Compile>
     <Compile Include="Exceptions\MissingTemplateException.cs" />
     <Compile Include="Ioc\IocContainer.cs" />
+    <Compile Include="Model\TagColor.cs" />
     <Compile Include="Model\ToDoItemModel.cs" />
     <Compile Include="Model\ToDoItemTags.cs" />
     <Compile Include="Repositories\ITagRepository.cs" />

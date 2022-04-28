@@ -26,9 +26,9 @@ namespace ToDoApplication.ViewModels
 			}
 		}
 
-		private Color _colors;
+		private TagColor _colors;
 
-		public Color Colors
+		public TagColor Colors
 		{
 			get { return _colors; }
 			set
@@ -38,10 +38,6 @@ namespace ToDoApplication.ViewModels
 			
 			}
 		}
-
-		public ObservableCollection<string> AvailableTagColors { get; }
-
-
 		private ToDoItemTagsViewModel _selectedTag;
 		private IDialogService _dialogService;
 		private readonly ITagRepository _tagRepository;
@@ -57,6 +53,7 @@ namespace ToDoApplication.ViewModels
 		}
 
 		public ObservableCollection<ToDoItemTagsViewModel> Tags { get; }
+		public ObservableCollection<TagColor> AvailableColours { get; }
 
 		private IEnumerable<Guid> _referencetagId;
 
@@ -79,14 +76,14 @@ namespace ToDoApplication.ViewModels
 			_dialogService = dialogService;
 			_tagRepository = tagRepository;
 			UpdateTagsCommand = new ActionCommand<ToDoItemTagsViewModel>(UpdateTags, CanUpdatetags);
-			AvailableTagColors = new ObservableCollection<string>();
-			
-			//AvailableTagColors.Add((Color)ColorConverter.ConvertFromString("Red"));
-			AvailableTagColors.Add("Blue");
-			AvailableTagColors.Add("Orange");
-			AvailableTagColors.Add("Green");
-			AvailableTagColors.Add("Yellow");
-			AvailableTagColors.Add("Red");
+			AvailableColours = new ObservableCollection<TagColor>
+			{
+				TagColor.Default,
+				TagColor.Color1,
+				TagColor.Color2,
+				TagColor.Color3,
+				TagColor.Color4
+			};
 
 		}
 
@@ -129,7 +126,7 @@ namespace ToDoApplication.ViewModels
 		private bool CanAddTag()
 		{
 			//var value = (Color)Colors.SelectedColor;
-			return !string.IsNullOrEmpty(TagName) &&  Colors != null;
+			return !string.IsNullOrEmpty(TagName);
 		}
 
 		private void AddTag()
@@ -140,7 +137,7 @@ namespace ToDoApplication.ViewModels
 				{
 					Id = Guid.NewGuid(),
 					Name = TagName,
-					Colors = Colors
+					Color = Colors,
 			};
 			Tags.Add(new ToDoItemTagsViewModel(tagModel, _tagRepository));
 			_tagRepository.Add(tagModel);
@@ -153,7 +150,7 @@ namespace ToDoApplication.ViewModels
 			{
 				Id = ITVM.Id,
 				Name = ITVM.Name,
-				Colors=ITVM.Colors
+				Color = ITVM.Color
 			};
 		}
 	}

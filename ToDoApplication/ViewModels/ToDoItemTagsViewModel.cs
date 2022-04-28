@@ -46,13 +46,25 @@ namespace ToDoApplication.ViewModels
 			}
 		}
 
+        private TagColor _color;
 
-		public  ToDoItemTagsViewModel (ToDoItemTags tags,ITagRepository tagRepository)
+        public TagColor Color
+        {
+            get { return _color; }
+            set 
+			{
+				_color = value;
+				_tagRepository.Update(createModel());
+			}
+        }
+
+
+        public  ToDoItemTagsViewModel (ToDoItemTags tags,ITagRepository tagRepository)
 		{
 		
 			Id = tags.Id;
 			_name = tags.Name;
-			_colors = tags.Colors;
+			_color = tags.Color;
 			_tagRepository = tagRepository;
 		}
 
@@ -62,7 +74,7 @@ namespace ToDoApplication.ViewModels
 			{
 				Id = Id,
 				Name = Name,
-				Colors=Colors
+				Color = Color
 			};
 		}
 

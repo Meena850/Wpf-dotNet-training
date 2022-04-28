@@ -1,9 +1,15 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-	<SolidColorBrush x:Key="ButtonMainBrush" Color="#6002EE" />
-	<SolidColorBrush x:Key="ButtonMouseOverBrush" Color="#A774F3" />
-	<SolidColorBrush x:Key="ButtonIsDisabledBrush" Color="#E1DCE9" />
-	<SolidColorBrush x:Key="ButtonIsPressedBrush" Color="#CDB8ED" />
+    <SolidColorBrush x:Key="ButtonMainBrush" Color="#6002EE" />
+    <SolidColorBrush x:Key="ButtonMouseOverBrush" Color="#A774F3" />
+    <SolidColorBrush x:Key="ButtonIsDisabledBrush" Color="#E1DCE9" />
+    <SolidColorBrush x:Key="ButtonIsPressedBrush" Color="#CDB8ED" />
+
+    <!--  Tag Colors  -->
+    <SolidColorBrush x:Key="TagColorDefault" Color="#d7fbfa" />
+    <SolidColorBrush x:Key="TagColor1" Color="#00abb2" />
+    <SolidColorBrush x:Key="TagColor2" Color="#00726a" />
+    <SolidColorBrush x:Key="TagColor3" Color="#02eeee" />
+    <SolidColorBrush x:Key="TagColor4" Color="#f484b1" />
 
 </ResourceDictionary>
