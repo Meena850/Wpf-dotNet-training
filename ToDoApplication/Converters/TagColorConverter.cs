@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 using ToDoApplication.Model;
@@ -19,21 +20,27 @@ namespace ToDoApplication.Converters
                 switch (tagColor)
                 {
                     case TagColor.Color1:
-                        return Brushes.Red;
+                        return GetTagBrush("TagColor1");
                     case TagColor.Color2:
-                        return Brushes.Green;
+                        return GetTagBrush("TagColor2");
                     case TagColor.Color3:
-                        return Brushes.Yellow;
+                        return GetTagBrush("TagColor3");
                     case TagColor.Color4:
-                        return Brushes.HotPink;
+                        return GetTagBrush("TagColor4");
                 }
             }
-            return Brushes.Gray;
+            return  GetTagBrush("TagColorDefault"); ;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
+        }
+
+        private SolidColorBrush GetTagBrush(string resourceKey)
+        {
+            var brushResource = Application.Current.Resources[resourceKey];
+            return brushResource as SolidColorBrush;
         }
     }
 }
