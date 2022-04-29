@@ -6,9 +6,19 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:ToDoApplication.Dialogs"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:rules="clr-namespace:ToDoApplication.Validation.Rules"
     Width="600"
     Height="300"
     mc:Ignorable="d">
+    <!--<UserControl.Resources>
+        <ControlTemplate x:Key="ErrorTemplate">
+            <TextBlock
+                Margin="4,0,0,0"
+                HorizontalAlignment="Center"
+                Foreground="Red"
+                Text="{Binding Path=[0].ErrorContent}" />
+        </ControlTemplate>
+    </UserControl.Resources>-->
     <Border>
         <Border.Effect>
             <DropShadowEffect ShadowDepth="3" Color="LightGray" />
@@ -80,22 +90,41 @@
                     </ListBox.ItemContainerStyle>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
                                 <TextBox
+                                    x:Name="TagNameTextBox"
+                                    Grid.Column="0"
                                     Width="250"
                                     Margin="10,2,2,2"
                                     HorizontalAlignment="Left"
                                     VerticalContentAlignment="Center"
-                                    Background="{Binding Color, Mode=TwoWay, Converter={StaticResource TagColorConverter}}"
-                                    Text="{Binding Name, UpdateSourceTrigger=LostFocus, Mode=TwoWay}">
-                                    <!--<TextBox.InputBindings>
-									<KeyBinding
-										Key="Enter"
-										Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=ListBox}, Path=DataContext.UpdateTagsCommand}"
-										CommandParameter="{Binding}" />
-								</TextBox.InputBindings>-->
+                                    Background="{Binding Color, Mode=TwoWay, Converter={StaticResource TagColorConverter}}">
+
+                                    <TextBox.Text>
+                                        <Binding Path="Name" UpdateSourceTrigger="PropertyChanged">
+                                            <Binding.ValidationRules>
+                                                <rules:NotEmptyValidationonRule />
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
                                 </TextBox>
+                                <TextBlock
+                                    x:Name="ValidationErrorTextBlock"
+                                    Grid.Column="0"
+                                    Width="250"
+                                    Margin="10,2,2,2"
+                                    HorizontalAlignment="Left"
+                                    Background="LightGray"
+                                    Foreground="Red"
+                                    Text="{Binding ElementName=TagNameTextBox, Path=(Validation.Errors)/ErrorContent}"
+                                    TextWrapping="Wrap"
+                                    Visibility="{Binding ElementName=TagNameTextBox, Path=(Validation.HasError), Converter={StaticResource boolToVisibilityConverter}}" />
                                 <ComboBox
+                                    Grid.Column="1"
                                     Width="200"
                                     Margin="16,0,0,0"
                                     ItemsSource="{Binding DataContext.AvailableColours, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}}"
@@ -109,48 +138,26 @@
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
-
-                                <!--<TextBox
-									Width="250"
-									Margin="10,2,2,2"
-									HorizontalAlignment="Left"
-									Text="{Binding Colors, UpdateSourceTrigger=LostFocus, Mode=TwoWay}" />-->
-
-                                <!--<ComboBox
-									DisplayMemberPath="{Binding Path=Name}"
-									ItemsSource="{Binding Path=AvailableTagColors}"
-									SelectedItem="{Binding Colors, Mode=TwoWay}" />-->
-
-                            </StackPanel>
+                            </Grid>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
-
-
-
                 </ListBox>
             </Grid>
-            <StackPanel Grid.Row="2">
+
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
                 <Button
                     x:Name="CloseButton"
+                    Grid.Column="1"
                     HorizontalAlignment="Right"
                     Command="{Binding CloseManageTagsDialogCommand}"
                     Content="CLose"
                     Style="{StaticResource MaterialDesignButton}" />
-            </StackPanel>
+            </Grid>
 
         </Grid>
     </Border>
 </UserControl>
-
-<!--<ComboBox
-						Width="140"
-						Margin="50,0,0,0"
-						ItemsSource="{Binding AvailableTags}"
-						SelectedItem="{Binding selectedtag, Mode=TwoWay}"
-						SelectionChanged="ComboBox_SelectionChanged">
-	<ComboBox.ItemTemplate>
-		<DataTemplate DataType="VM:ToDoItemTagsViewModel">
-			<customControls:ToDoItemTag TagText="{Binding Name}" />
-		</DataTemplate>
-	</ComboBox.ItemTemplate>
-</ComboBox>-->

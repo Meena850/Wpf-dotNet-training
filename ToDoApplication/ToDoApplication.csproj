@@ -125,6 +125,7 @@
     <Compile Include="UserControls\ToDoItemTag.xaml.cs">
       <DependentUpon>ToDoItemTag.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Validation\Rules\NotEmptyValidationonRule.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\ManageTagsDialogViewModel.cs" />
     <Compile Include="ViewModels\ToDoItemTagsViewModel.cs" />
