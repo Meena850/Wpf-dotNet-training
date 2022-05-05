@@ -157,6 +157,17 @@ namespace ToDoApplication.UnitTest.ViewModels
 			//tagrepositoryMock.Verify(repo => repo.Remove(It.IsAny<Guid>()));
 			result.ShouldBeFalse();
 		}
+        [TestMethod]
+        public void SetTagName_ToEmptyString_NamePropertyHasError()
+        {
+			//Arrange
+			var tagVM = CreateModel("Tag 1");
+			//Act
+			tagVM.Name = String.Empty;
+			//Assert
+			tagVM["Name"].ShouldBe("Tag Cannot be empty");
+
+        }
 
 
 		private IDialogService dialogService;

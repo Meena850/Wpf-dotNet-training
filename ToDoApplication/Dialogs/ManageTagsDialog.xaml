@@ -102,20 +102,22 @@
                                     Margin="10,2,2,2"
                                     HorizontalAlignment="Left"
                                     VerticalContentAlignment="Center"
-                                    Background="{Binding Color, Mode=TwoWay, Converter={StaticResource TagColorConverter}}">
+                                    Background="{Binding Color, Mode=TwoWay, Converter={StaticResource TagColorConverter}}"
+                                    Text="{Binding Name, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}">
 
-                                    <TextBox.Text>
+                                    <!--<TextBox.Text>
                                         <Binding Path="Name" UpdateSourceTrigger="PropertyChanged">
                                             <Binding.ValidationRules>
                                                 <rules:NotEmptyValidationonRule />
                                             </Binding.ValidationRules>
                                         </Binding>
-                                    </TextBox.Text>
+                                    </TextBox.Text>-->
                                 </TextBox>
                                 <TextBlock
                                     x:Name="ValidationErrorTextBlock"
                                     Grid.Column="0"
                                     Width="250"
+                                    Height="15"
                                     Margin="10,2,2,2"
                                     HorizontalAlignment="Left"
                                     Background="LightGray"

@@ -130,6 +130,7 @@
     <Compile Include="ViewModels\ManageTagsDialogViewModel.cs" />
     <Compile Include="ViewModels\ToDoItemTagsViewModel.cs" />
     <Compile Include="ViewModels\ToDoItemViewModel.cs" />
+    <Compile Include="ViewModels\ValidationViewModelbase.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Page Include="Dialogs\ManageTagsDialog.xaml">
       <SubType>Designer</SubType>
