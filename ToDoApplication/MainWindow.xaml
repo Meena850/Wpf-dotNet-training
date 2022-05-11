@@ -3,11 +3,14 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:VM="clr-namespace:ToDoApplication.ViewModels"
+    xmlns:b="clr-namespace:ToDoApplication.Behaviors"
     xmlns:customControls="clr-namespace:ToDoApplication.CustomControls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:data="clr-namespace:ToDoApplication.Model"
     xmlns:local="clr-namespace:ToDoApplication"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:p="clr-namespace:ToDoApplication.Properties"
+    xmlns:properties="clr-namespace:ToDoApplication.AttachedProperties"
     xmlns:usercontrols="clr-namespace:ToDoApplication.UserControls"
     Title="ToDo HMI Application"
     Width="950"
@@ -40,7 +43,7 @@
                 Grid.ColumnSpan="2"
                 HorizontalAlignment="Center"
                 Style="{StaticResource Headings}"
-                Text="TO-DO APPLICATION" />
+                Text="{x:Static p:Resources.AppTittle}" />
             <!--  TextBox + AddButton  -->
             <StackPanel
                 Grid.Row="1"
@@ -50,6 +53,8 @@
                 <TextBlock Style="{StaticResource txtBlockResource}" Text="ToDoName" />
                 <TextBox
                     Name="txtTodo"
+                    properties:ExampleProperties.SetBackgroundColorWhenEmpty="True"
+                    properties:ExampleProperties.TextEmptyBrush="Green"
                     Style="{StaticResource txtBoxResource}"
                     Text="{Binding ToListValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                 <TextBlock Style="{StaticResource txtBlockResource}" Text="ToDoDescription" />
@@ -113,110 +118,112 @@
                 Orientation="Vertical">
                 <TextBlock Style="{StaticResource SubHeadings}" Text="TO-DO LIST" />
                 <!--  ToDo List  -->
+                <ScrollViewer Height="180" b:ScrollViewerHelper.AutoScroll="True">
+                    <ListView
+                        x:Name="lstTodo"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Margin="0,0,0,0"
+                        ItemsSource="{Binding ToListItemsSort, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                        SelectedItem="{Binding selectedtoDoItem, Mode=TwoWay}"
+                        Style="{StaticResource ToListResource}">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn>
+                                    <GridViewColumnHeader Command="{Binding SortNameCommand}" Content="Name" />
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock
+                                                Name="txtName"
+                                                Margin="2"
+                                                VerticalAlignment="Center"
+                                                Style="{StaticResource txtBlockResource}"
+                                                Text="{Binding Name}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
 
-                <ListView
-                    x:Name="lstTodo"
-                    Grid.Row="1"
-                    Grid.Column="1"
-                    Height="200"
-                    ItemsSource="{Binding ToListItemsSort, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    SelectedItem="{Binding selectedtoDoItem, Mode=TwoWay}"
-                    Style="{StaticResource ToListResource}">
-                    <ListView.View>
+                                <GridViewColumn>
+                                    <GridViewColumnHeader Content="ToDoDescription" />
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock
+                                                Name="txtDescription"
+                                                Margin="2"
+                                                VerticalAlignment="Center"
+                                                Style="{StaticResource txtBlockResource}"
+                                                Text="{Binding ToDoDescription}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
 
-                        <GridView>
-                            <GridViewColumn>
-                                <GridViewColumnHeader Command="{Binding SortNameCommand}" Content="Name" />
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock
-                                            Name="txtName"
-                                            Margin="2"
-                                            VerticalAlignment="Center"
-                                            Style="{StaticResource txtBlockResource}"
-                                            Text="{Binding Name}" />
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
+                                <GridViewColumn>
+                                    <GridViewColumnHeader Content="Timestamp" />
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock
+                                                Name="txtTime"
+                                                Margin="2"
+                                                VerticalAlignment="Center"
+                                                Style="{StaticResource txtBlockResource}"
+                                                Text="{Binding Timestamp, Converter={StaticResource dateTimeToStringConverter}}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
 
-                            <GridViewColumn>
-                                <GridViewColumnHeader Content="ToDoDescription" />
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock
-                                            Name="txtDescription"
-                                            Margin="2"
-                                            VerticalAlignment="Center"
-                                            Style="{StaticResource txtBlockResource}"
-                                            Text="{Binding ToDoDescription}" />
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
+                                <GridViewColumn>
+                                    <GridViewColumnHeader Content="Remove Item" />
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button
+                                                Name="btnremove"
+                                                Grid.Column="4"
+                                                Command="{Binding DataContext.RemoveToDoCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}}"
+                                                CommandParameter="{Binding}"
+                                                Content="Remove"
+                                                Style="{StaticResource buttonResource}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
 
-                            <GridViewColumn>
-                                <GridViewColumnHeader Content="Timestamp" />
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock
-                                            Name="txtTime"
-                                            Margin="2"
-                                            VerticalAlignment="Center"
-                                            Style="{StaticResource txtBlockResource}"
-                                            Text="{Binding Timestamp, Converter={StaticResource dateTimeToStringConverter}}" />
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
+                                <GridViewColumn>
+                                    <GridViewColumnHeader Content="Tags" />
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <ItemsControl
+                                                Grid.Column="5"
+                                                Margin="15,0,0,0"
+                                                ItemsSource="{Binding Tags}">
+                                                <ItemsControl.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <StackPanel Orientation="Horizontal" />
+                                                    </ItemsPanelTemplate>
+                                                </ItemsControl.ItemsPanel>
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
 
-                            <GridViewColumn>
-                                <GridViewColumnHeader Content="Remove Item" />
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Button
-                                            Name="btnremove"
-                                            Grid.Column="4"
-                                            Command="{Binding DataContext.RemoveToDoCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}}"
-                                            CommandParameter="{Binding}"
-                                            Content="Remove"
-                                            Style="{StaticResource buttonResource}" />
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
+                                                        <customControls:ToDoItemTag
+                                                            Background="{Binding Color, Converter={StaticResource TagColorConverter}}"
+                                                            RemoveTagCommand="{Binding DataContext.RemoveTagCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ItemsControl}}"
+                                                            RemoveTagCommandParameter="{Binding}"
+                                                            TagText="{Binding Name}" />
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
 
-                            <GridViewColumn>
-                                <GridViewColumnHeader Content="Tags" />
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <ItemsControl
-                                            Grid.Column="5"
-                                            Margin="15,0,0,0"
-                                            ItemsSource="{Binding Tags}">
-                                            <ItemsControl.ItemsPanel>
-                                                <ItemsPanelTemplate>
-                                                    <StackPanel Orientation="Horizontal" />
-                                                </ItemsPanelTemplate>
-                                            </ItemsControl.ItemsPanel>
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-
-                                                    <customControls:ToDoItemTag
-                                                        Background="{Binding Color, Converter={StaticResource TagColorConverter}}"
-                                                        RemoveTagCommand="{Binding DataContext.RemoveTagCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ItemsControl}}"
-                                                        RemoveTagCommandParameter="{Binding}"
-                                                        TagText="{Binding Name}" />
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-
-                        </GridView>
+                            </GridView>
 
 
 
 
-                    </ListView.View>
-                </ListView>
+                        </ListView.View>
+                    </ListView>
+                </ScrollViewer>
             </StackPanel>
 
 

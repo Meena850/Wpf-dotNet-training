@@ -117,13 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AppTittle" xml:space="preserve">
-    <value>Todo Application</value>
-  </data>
   <data name="TagEmptyError" xml:space="preserve">
-    <value>Tag Cannot be Empty!</value>
+    <value>Tag darf nicht leer sein!</value>
   </data>
   <data name="TagNotUniqueError" xml:space="preserve">
-    <value>Tag name must be unique!</value>
+    <value>Tag-Name muss eindeutig sein!</value>
+  </data>
+  <data name="Todo Application" xml:space="preserve">
+    <value>Todo-Anwendung</value>
   </data>
 </root>

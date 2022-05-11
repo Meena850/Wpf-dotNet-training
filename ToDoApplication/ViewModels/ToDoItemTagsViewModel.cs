@@ -8,12 +8,14 @@ using System.Threading.Tasks;
 using System.Windows.Media;
 using ToDoApplication.Command;
 using ToDoApplication.Model;
+using ToDoApplication.Properties;
 using ToDoApplication.Repositories;
 
 namespace ToDoApplication.ViewModels
 {
 	internal class ToDoItemTagsViewModel : ValidationViewModelbase
 	{
+		
 		private ITagRepository _tagRepository;
 
 		public Guid Id { get; set; }
@@ -55,12 +57,12 @@ namespace ToDoApplication.ViewModels
         {
 			if (String.IsNullOrWhiteSpace(Name))
 			{
-				SetError(nameof(Name), "Tag Cannot be Empty!");
+				SetError(nameof(Name), Resources.TagEmptyError);
 				return false;
 			}
 			else if (NameIsNotunique())
 			{
-				SetError(nameof(Name), "Tag name must be unique!");
+				SetError(nameof(Name), Resources.TagNotUniqueError);
 				return false;
 			}
 			else 
