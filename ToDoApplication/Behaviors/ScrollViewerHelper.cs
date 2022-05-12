@@ -33,19 +33,23 @@ namespace ToDoApplication.Behaviors
             {
                 scrollViewer.ScrollChanged += OnScrollChanged;
             }
-            else if(d is ListBox listBox)
+            else if(d is ListView listView)
             {
-                var childCount = VisualTreeHelper.GetChildrenCount(listBox);
-                var border = VisualTreeHelper.GetChild(listBox, 0);
-                var sv = VisualTreeHelper.GetChild(border, 0) as ScrollViewer;
-                sv.ScrollChanged += OnScrollChanged;
+                listView.Loaded += (s, loadedArgs) =>
+                {
+                    var childCount = VisualTreeHelper.GetChildrenCount(listView);
+                    var border = VisualTreeHelper.GetChild(listView, 0);
+                    var sv = VisualTreeHelper.GetChild(border, 0) as ScrollViewer;
+                    sv.ScrollChanged += OnScrollChanged;
+                };
+                
             };
         }
 
         private static void OnScrollChanged(object sender, ScrollChangedEventArgs args)
         {
             var sv = sender as ScrollViewer;
-            if (args.ViewportHeightChange > 0d)
+            if (args.ExtentHeightChange > 0d)
             {
                 sv.ScrollToBottom();
             }

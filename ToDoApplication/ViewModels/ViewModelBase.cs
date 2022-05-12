@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace ToDoApplication.ViewModels
 {
@@ -15,5 +16,10 @@ namespace ToDoApplication.ViewModels
 		{
 				PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
+
+		public static bool IsRunningInDesigner()
+        {
+			return (bool)(DesignerProperties.IsInDesignModeProperty.GetMetadata(typeof(DependencyObject)).DefaultValue);
+        }
 	}
 }

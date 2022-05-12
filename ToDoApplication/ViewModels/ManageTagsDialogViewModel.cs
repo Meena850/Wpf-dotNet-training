@@ -7,14 +7,16 @@ using System.Threading.Tasks;
 using System.Windows.Media;
 using ToDoApplication.Command;
 using ToDoApplication.Model;
+using ToDoApplication.Properties;
 using ToDoApplication.Repositories;
 using ToDoApplication.Services;
 
 namespace ToDoApplication.ViewModels
 {
-	class ManageTagsDialogViewModel
+	class ManageTagsDialogViewModel : ValidationViewModelbase
 	{
 		private string _tagName;
+		public Guid Id { get; set; }
 
 		public string TagName
 		{
@@ -22,8 +24,38 @@ namespace ToDoApplication.ViewModels
 			set 
 			{ 
 				_tagName = value;
-				AddTagCommand.RaiseCanExecuteChanged();
+				if (ValidateName())
+				{
+					AddTagCommand.RaiseCanExecuteChanged();
+				}
 			}
+		}
+
+		private bool ValidateName()
+		{
+			if (String.IsNullOrWhiteSpace(TagName))
+			{
+				SetError(nameof(TagName), Resources.TagEmptyError);
+				return false;
+			}
+			else if (NameIsNotunique())
+			{
+				SetError(nameof(TagName), Resources.TagNotUniqueError);
+				return false;
+			}
+			else
+			{
+				ResetError(nameof(TagName));
+				return true;
+			}
+		}
+		private bool NameIsNotunique()
+		{
+			var otherTagNames = _tagRepository
+				.GetAll()
+				.Where(tag => tag.Id != this.Id)
+				.Select(tag => tag.Name);
+			return otherTagNames.Contains(TagName);
 		}
 
 		private TagColor _colors;

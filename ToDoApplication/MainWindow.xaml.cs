@@ -30,19 +30,6 @@ namespace ToDoApplication
 		{
 			Title = "To Do HMI";
 			InitializeComponent();
-			//modified
-			DataContext = IocContainer.current.Resolve<MainWindowViewModel>();
-			//var tagRepository = new TagRepository();
-			//DataContext = new MainWindowViewModel
-			//	(new TodoItemRepository(), tagRepository,
-			//	new DialogService(tagRepository),null);
 		}
-
-		private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-
-		}
-
-
 	}
 }
