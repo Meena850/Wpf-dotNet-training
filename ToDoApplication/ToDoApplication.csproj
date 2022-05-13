@@ -126,7 +126,9 @@
     <Compile Include="Repositories\ITodoItemRepository.cs" />
     <Compile Include="Repositories\TagRepository.cs" />
     <Compile Include="Repositories\TodoItemRepository.cs" />
+    <Compile Include="Services\AppConfigService.cs" />
     <Compile Include="Services\DialogService.cs" />
+    <Compile Include="Services\IAppConfigService.cs" />
     <Compile Include="Services\IDialogService.cs" />
     <Compile Include="Services\ILoggingService.cs" />
     <Compile Include="Services\LoggingService.cs" />

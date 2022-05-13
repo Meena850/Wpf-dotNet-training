@@ -55,4 +55,5 @@ using System.Windows;
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
 [assembly: InternalsVisibleTo("ToDoApplication.UnitTest")]
+[assembly: InternalsVisibleTo("ToDoApplication.IntegrationTest")]
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]

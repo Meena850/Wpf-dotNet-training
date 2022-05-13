@@ -30,6 +30,7 @@ namespace ToDoApplication.Ioc
 			builder.RegisterType<DialogService>().As<IDialogService>();
 
 			builder.RegisterType<LoggingService>().As<ILoggingService>();
+			builder.RegisterType<AppConfigService>().As<IAppConfigService>().SingleInstance();
 
 			//Viewmodels
 

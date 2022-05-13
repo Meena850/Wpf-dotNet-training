@@ -42,7 +42,6 @@ namespace ToDoApplication.Behaviors
                     var sv = VisualTreeHelper.GetChild(border, 0) as ScrollViewer;
                     sv.ScrollChanged += OnScrollChanged;
                 };
-                
             };
         }
 

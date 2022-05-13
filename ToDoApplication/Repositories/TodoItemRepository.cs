@@ -7,18 +7,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ToDoApplication.Model;
+using ToDoApplication.Services;
 
 namespace ToDoApplication.Repositories
 {
 	class TodoItemRepository : ITodoItemRepository
 	{
-		private string _directoryPath = @"C:\Krones_CRD\TestFiles";
-		private string _fileName = "ToDoItem.json";
+		const string _directoryPath = @"C:\Krones_CRD\TestFiles";
+		const string _fileName = "ToDoItem.json";
+		private readonly IAppConfigService _configService;
+
+        public TodoItemRepository(IAppConfigService configService)
+        {
+			_configService = configService;
+				
+        }
 		public List<ToDoItemModel> GetAll()
 		{
-			if (File.Exists(Path.Combine(_directoryPath, _fileName)))
+			if (_configService.TodoItemFile.Exists)
 			{
-				string json = File.ReadAllText(Path.Combine(_directoryPath, _fileName));
+				string json = File.ReadAllText(Path.Combine(_configService.TodoItemFile.FullName));
 				if (!string.IsNullOrEmpty(json))
 					 return JsonConvert.DeserializeObject<List<ToDoItemModel>>(json);
 			}
@@ -46,19 +54,19 @@ namespace ToDoApplication.Repositories
 		 
 		private void saveItems(List<ToDoItemModel> items)
 		{
-			if (!new DirectoryInfo(_directoryPath).Exists)
-				Directory.CreateDirectory(_directoryPath);
-
+			var todoItemsFile = _configService.TodoItemFile;
+			if (!todoItemsFile.Directory.Exists)
+				todoItemsFile.Directory.Create();
 
 			if (items.Count > 0)
 			{
-				File.WriteAllText(Path.Combine(_directoryPath, _fileName), JsonConvert.SerializeObject(items, Formatting.Indented));
+				File.WriteAllText(todoItemsFile.FullName, 
+					JsonConvert.SerializeObject(items, Formatting.Indented));
 			}
 			else
 			{
-				File.Delete(Path.Combine(_directoryPath, _fileName));
+				File.Delete(todoItemsFile.FullName);
 			}
-
 		}
 
 		public void Update(ToDoItemModel todoitem)
