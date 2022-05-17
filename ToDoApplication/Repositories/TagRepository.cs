@@ -4,18 +4,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using ToDoApplication.Model;
+using ToDoApplication.Services;
 
 namespace ToDoApplication.Repositories
 {
 	class TagRepository : ITagRepository
 	{
-	
-		private string _directoryPath = @"C:\Krones_CRD\TestFiles";
-		private string _fileName = "TagItem.json";
-
-		public TagRepository()
+		private readonly IAppConfigService _configService;
+		public TagRepository(IAppConfigService configService)
 		{
-
+			_configService = configService;
 		}
 		public void Add(ToDoItemTags tag)
 		{
@@ -26,9 +24,9 @@ namespace ToDoApplication.Repositories
 
 		public List<ToDoItemTags> GetAll()
 		{
-			if (File.Exists(Path.Combine(_directoryPath, _fileName)))
+			if (_configService.TagItemFile.Exists)
 			{
-				string json = File.ReadAllText(Path.Combine(_directoryPath, _fileName));
+				string json = File.ReadAllText(_configService.TagItemFile.FullName);
 				if (!string.IsNullOrEmpty(json))
 					return JsonConvert.DeserializeObject<List<ToDoItemTags>>(json);
 			}
@@ -54,16 +52,17 @@ namespace ToDoApplication.Repositories
 		}
 		private void saveItems(List<ToDoItemTags> items)
 		{
-			if (!new DirectoryInfo(_directoryPath).Exists)
-				Directory.CreateDirectory(_directoryPath);
+			var tagItemsFile = _configService.TagItemFile;
+			if (!tagItemsFile.Directory.Exists)
+				tagItemsFile.Directory.Create();
 
 			if (items.Count > 0)
 			{
-				File.WriteAllText(Path.Combine(_directoryPath, _fileName), JsonConvert.SerializeObject(items, Formatting.Indented));
+				File.WriteAllText(_configService.TagItemFile.FullName, JsonConvert.SerializeObject(items, Formatting.Indented));
 			}
 			else
 			{
-				File.Delete(Path.Combine(_directoryPath, _fileName));
+				File.Delete(Path.Combine(tagItemsFile.FullName));
 			}
 
 		}

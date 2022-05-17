@@ -8,7 +8,7 @@ using ToDoApplication.Model;
 
 namespace ToDoApplication.Repositories
 {
-	interface ITagRepository
+	internal interface ITagRepository
 	{
 		List<ToDoItemTags> GetAll();
 		void Add(ToDoItemTags tag);

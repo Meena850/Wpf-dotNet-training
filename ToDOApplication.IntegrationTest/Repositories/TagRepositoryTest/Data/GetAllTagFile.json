@@ -1,0 +1,22 @@
+[
+  {
+    "Id": "ce8146d2-1312-4bf0-a90b-8cd8f0106ac0",
+    "Name": "Tag1",
+    "Color": 1
+  },
+  {
+    "Id": "3b39c76c-3c36-4e4f-85a8-8288217db15d",
+    "Name": "Tag2",
+    "Color": 2
+  },
+  {
+    "Id": "47cac17c-e4fa-4daa-9ae5-6cece12383d5",
+    "Name": "Tag3",
+    "Color": 3
+  },
+  {
+    "Id": "21d210ce-b9cb-4101-8af7-31e844ad5431",
+    "Name": "Tag4",
+    "Color": 4
+  }
+]

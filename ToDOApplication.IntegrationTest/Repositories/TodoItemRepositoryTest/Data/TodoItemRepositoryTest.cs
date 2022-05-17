@@ -46,6 +46,7 @@ namespace ToDOApplication.IntegrationTest.Repositories.TodoItemRepositoryTest.Da
                 Directory.Delete(testDir, true);
             }
         }
+
         private ITodoItemRepository CreateSut(IAppConfigService configService)
         {
             return new TodoItemRepository(configService);
