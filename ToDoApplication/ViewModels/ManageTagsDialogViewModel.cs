@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media;
 using ToDoApplication.Command;
 using ToDoApplication.Model;
@@ -161,7 +162,7 @@ namespace ToDoApplication.ViewModels
 			return !string.IsNullOrEmpty(TagName);
 		}
 
-		private void AddTag()
+		private async void AddTag()
 		{
 			if (!string.IsNullOrEmpty(TagName))
 			{
@@ -172,7 +173,18 @@ namespace ToDoApplication.ViewModels
 					Color = Colors,
 			};
 			Tags.Add(new ToDoItemTagsViewModel(tagModel, _tagRepository));
-			_tagRepository.Add(tagModel);
+				try 
+				{
+					await _tagRepository.Add(tagModel);
+				}catch(Exception ex)
+				{
+					Application.Current.Dispatcher.Invoke(() =>
+					{
+						throw ex;
+
+					});
+				}
+			 await _tagRepository.Add(tagModel);
 			}
 		}
 

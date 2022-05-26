@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoApplication", "ToDoAppl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDOApplication.IntegrationTest", "ToDOApplication.IntegrationTest\ToDOApplication.IntegrationTest.csproj", "{A500151B-6D52-4269-9DF9-D4E267A7E6BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoApplication.UnitTest", "..\..\..\Users\CRD-User01\Desktop\Meena\Code\WPF_Training\ToDoApplication.UnitTest\ToDoApplication.UnitTest.csproj", "{966C993B-4918-413D-A6A3-263601A48A0F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoApplication.UnitTest", "..\..\..\Users\CRD-User01\Desktop\Meena\SampleCode\WPF_Training\ToDoApplication.UnitTest\ToDoApplication.UnitTest.csproj", "{966C993B-4918-413D-A6A3-263601A48A0F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

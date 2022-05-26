@@ -10,11 +10,11 @@ namespace ToDoApplication.Repositories
 {
 	internal interface ITagRepository
 	{
-		List<ToDoItemTags> GetAll();
-		void Add(ToDoItemTags tag);
+		Task<List<ToDoItemTags>> GetAll();
+		Task Add(ToDoItemTags tag);
 
-		void Remove(Guid tagId);
+		Task Remove(Guid tagId);
 
-		void Update(ToDoItemTags item);
+		Task Update(ToDoItemTags item);
 	}
 }
