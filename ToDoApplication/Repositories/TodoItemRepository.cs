@@ -22,46 +22,46 @@ namespace ToDoApplication.Repositories
 			_configService = configService;
 				
         }
-		public List<ToDoItemModel> GetAll()
+		public async Task<List<ToDoItemModel>> GetAll()
 		{
 			if (_configService.TodoItemFile.Exists)
 			{
-				string json = File.ReadAllText(Path.Combine(_configService.TodoItemFile.FullName));
+				string json = await ReadFileAsync(_configService.TodoItemFile.FullName);
 				if (!string.IsNullOrEmpty(json))
 					 return JsonConvert.DeserializeObject<List<ToDoItemModel>>(json);
 			}
 			return new List<ToDoItemModel>();
 		}
 		
-		public void Remove(Guid id)
+		public async Task Remove(Guid id)
 		{
-			List<ToDoItemModel> removeFromItems = GetAll();
+			List<ToDoItemModel> removeFromItems = await GetAll();
 			//removeFromItems.RemoveAll(x => x.Name == item.Name);
 			ToDoItemModel Itemtoremove = removeFromItems.First(item => item.Id == id);
 			if (Itemtoremove != null)
 			{
 				removeFromItems.Remove(Itemtoremove);
-				saveItems(removeFromItems);
+				await saveItems(removeFromItems);
 			}
 		}
 
-		public void Add(ToDoItemModel item)
+		public async Task Add(ToDoItemModel item)
 		{
-			List<ToDoItemModel> addToItems = GetAll();
+			List<ToDoItemModel> addToItems = await GetAll();
 			addToItems.Add(item);
-			saveItems(addToItems);
+			await saveItems (addToItems);
 		}
 		 
-		private void saveItems(List<ToDoItemModel> items)
+		private async Task saveItems(List<ToDoItemModel> items)
 		{
 			var todoItemsFile = _configService.TodoItemFile;
 			if (!todoItemsFile.Directory.Exists)
 				todoItemsFile.Directory.Create();
+			var todoItemString = JsonConvert.SerializeObject(items, Formatting.Indented);
 
 			if (items.Count > 0)
 			{
-				File.WriteAllText(todoItemsFile.FullName, 
-					JsonConvert.SerializeObject(items, Formatting.Indented));
+				await WriteFileAsync(todoItemsFile.FullName, todoItemString);
 			}
 			else
 			{
@@ -69,9 +69,9 @@ namespace ToDoApplication.Repositories
 			}
 		}
 
-		public void Update(ToDoItemModel todoitem)
+		public async Task Update(ToDoItemModel todoitem)
 		{
-			List<ToDoItemModel> updateinItems = GetAll();
+			List<ToDoItemModel> updateinItems = await GetAll();
 			//var itemtoUpdate=updateinItems.Where(w => w.Id == item.Id).ToList().ForEach
 			//	(i => 
 			//	i.IsDone = item.IsDone);
@@ -81,7 +81,29 @@ namespace ToDoApplication.Repositories
 			itemToUpdate.TagId = todoitem.TagId;
 			itemToUpdate.ToDoDescription = todoitem.ToDoDescription;
 			itemToUpdate.Timestamp = todoitem.Timestamp;
-			saveItems(updateinItems);
+			await saveItems(updateinItems);
+
+		}
+
+
+
+		private async Task<string> ReadFileAsync(string filename)
+		{
+			using (var streamReader = new StreamReader(File.OpenRead(filename)))
+			{
+				return await streamReader.ReadToEndAsync();
+			}
+		}
+
+		private async Task WriteFileAsync(string fileName, string content)
+		{
+			using (var memStream = new MemoryStream(Encoding.UTF8.GetBytes(content)))
+			{
+				using (var fileStream = File.OpenWrite(fileName))
+				{
+					await memStream.CopyToAsync(fileStream);
+				}
+			}
 
 		}
 	}

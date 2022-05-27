@@ -9,10 +9,10 @@ namespace ToDoApplication.Repositories
 {
 	internal  interface ITodoItemRepository
 	{
-		List<ToDoItemModel> GetAll();
-		void Add(ToDoItemModel item);
-		void Remove(Guid id);
-		void Update(ToDoItemModel item);
+		Task<List<ToDoItemModel>> GetAll();
+		Task Add(ToDoItemModel item);
+		Task Remove(Guid id);
+		Task Update(ToDoItemModel item);
 
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using ToDoApplication.Command;
 using ToDoApplication.Model;
 using ToDoApplication.Repositories;
@@ -19,7 +20,7 @@ namespace ToDoApplication.ViewModels
 
 		public ObservableCollection<ToDoItemTagsViewModel> Tags { get; set; }
 
-		public ActionCommand<ToDoItemTagsViewModel> RemoveTagCommand { get; }
+		public AsyncCommand<ToDoItemTagsViewModel> RemoveTagCommand { get; }
 
 		public ToDoItemViewModel(ToDoItemModel item,ITodoItemRepository repository) : this(item.Id)
 		{
@@ -28,7 +29,7 @@ namespace ToDoApplication.ViewModels
 			IsDone = item.IsDone;
 			ToDoDescription = item.ToDoDescription;
 			_repository = repository;
-			RemoveTagCommand = new ActionCommand<ToDoItemTagsViewModel>(RemoveTag, CanRemoveTag);
+			RemoveTagCommand = new AsyncCommand<ToDoItemTagsViewModel>(RemoveTag, CanRemoveTag);
 		}
 
 		private bool CanRemoveTag(ToDoItemTagsViewModel _)
@@ -42,15 +43,15 @@ namespace ToDoApplication.ViewModels
 			Tags = new ObservableCollection<ToDoItemTagsViewModel>();
 		}
 
-		public void RemoveTag(ToDoItemTagsViewModel tagRemove)
+		public async Task RemoveTag(ToDoItemTagsViewModel tagRemove)
 		{
 			Tags.Remove(tagRemove);
-			update();
+			await update();
 		}
-		private void update()
+		private async Task update()
 		{
 			var model = CreateModel();
-			_repository.Update(model);
+			await _repository.Update(model);
 		}
 
 		public ToDoItemModel CreateModel()

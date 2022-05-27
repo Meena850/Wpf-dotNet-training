@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using ToDoApplication.Model;
 using ToDoApplication.Repositories;
 using ToDoApplication.Services;
@@ -21,18 +22,17 @@ namespace ToDOApplication.IntegrationTest.Repositories.TodoItemRepositoryTest.Da
         }
         
         [TestMethod]
-        public void GetAll_FileContainsTwoItems_ReturnsListWIthTwoItems()
+        public async Task  GetAll_FileContainsTwoItems_ReturnsListWIthTwoItems()
         {                
                 //Arrange
                 //Create a unique directory for this test method
-                
                 //Copy test files to directory
                 var todoItemTestFile = CopyFileTotestDir("GetAllTExtFile.json");
                 var appConfigMock = new Mock<IAppConfigService>();
                 appConfigMock.Setup(s => s.TodoItemFile).Returns(todoItemTestFile);
                 var repository = CreateSut(todoItemTestFile);
                 //Act
-                var todos = repository.GetAll();
+                var todos = await repository.GetAll();
                 //Assert
                 todos.Count.ShouldBe(2);
         }

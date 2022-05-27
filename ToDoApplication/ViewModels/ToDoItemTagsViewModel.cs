@@ -10,6 +10,7 @@ using ToDoApplication.Command;
 using ToDoApplication.Model;
 using ToDoApplication.Properties;
 using ToDoApplication.Repositories;
+using ToDoApplication.Util;
 
 namespace ToDoApplication.ViewModels
 {
@@ -21,7 +22,7 @@ namespace ToDoApplication.ViewModels
 		public Guid Id { get; set; }
 		//public string Name { get; set; }
 
-		public ObservableCollection<Color> AvailableTagColors { get; }
+		public ObservableCollection<Color> AvailableTagColors { get; private set; }
 
 		private Color _colors;
 
@@ -44,23 +45,31 @@ namespace ToDoApplication.ViewModels
 			set
 			{
 				_name = value;
-				if (ValidateName())
-				{
-					_tagRepository.Update(createModel());
-				}
-				
-
+				UpdateIfValidName();
 			}
 		}
 
-        private bool ValidateName()
+		private void UpdateIfValidName()
+		{
+			AsyncVoidHelper.TryThrowOnDispatcher(async () =>
+			{
+				if (await ValidateName())
+				{
+					await _tagRepository.Update(createModel());
+				}
+
+			});
+		}
+
+
+		private async Task<bool> ValidateName()
         {
 			if (String.IsNullOrWhiteSpace(Name))
 			{
 				SetError(nameof(Name), Resources.TagEmptyError);
 				return false;
 			}
-			else if (NameIsNotunique())
+			else if (await NameIsNotunique())
 			{
 				SetError(nameof(Name), Resources.TagNotUniqueError);
 				return false;
@@ -72,10 +81,10 @@ namespace ToDoApplication.ViewModels
             }
         }
 
-        private bool NameIsNotunique()
+        private async Task<bool> NameIsNotunique()
         {
-			var otherTagNames = _tagRepository
-				.GetAll()
+			var otherTagNames = (await _tagRepository
+				.GetAll())
 				.Where(tag => tag.Id != this.Id)
 				.Select(tag => tag.Name);
 			return otherTagNames.Contains(Name);

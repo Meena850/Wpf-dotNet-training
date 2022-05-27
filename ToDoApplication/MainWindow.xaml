@@ -127,7 +127,7 @@
                     Height="180"
                     Margin="0,0,0,0"
                     b:ScrollViewerHelper.AutoScroll="True"
-                    ItemsSource="{Binding ToListItemsSort, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    ItemsSource="{Binding ToListItems}"
                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                     SelectedItem="{Binding selectedtoDoItem, Mode=TwoWay}"
                     Style="{StaticResource ToListResource}">

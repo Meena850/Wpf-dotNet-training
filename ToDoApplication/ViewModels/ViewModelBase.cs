@@ -21,5 +21,10 @@ namespace ToDoApplication.ViewModels
         {
 			return (bool)(DesignerProperties.IsInDesignModeProperty.GetMetadata(typeof(DependencyObject)).DefaultValue);
         }
+
+		public virtual Task onAttchedasync()
+		{
+			return Task.CompletedTask;
+		}
 	}
 }

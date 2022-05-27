@@ -3,6 +3,7 @@ using Moq;
 using Shouldly;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using ToDoApplication.Model;
 using ToDoApplication.Repositories;
 using ToDoApplication.Services;
@@ -19,14 +20,14 @@ namespace ToDOApplication.IntegrationTest.Repositories.TagRepositoryTest
         }
        
         [TestMethod]
-        public void GetAll_FileContains4Tags_ReturnsListWith4Tags()
+        public async Task GetAll_FileContains4Tags_ReturnsListWith4Tags()
         {
             //Arrange
             //Copy test files to directory
             var tagItemTestFile = CopyFileTotestDir("GetAllTagFile.json");
             var repository = CreateSut(tagItemTestFile);
             //Act
-            var tags = repository.GetAll();
+            var tags = await repository.GetAll();
 
             //Assert
             tags.Count.ShouldBe(4);

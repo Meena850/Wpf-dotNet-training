@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Data;
 using ToDoApplication.Command;
 using ToDoApplication.Model;
@@ -20,7 +21,7 @@ namespace ToDoApplication.ViewModels
 		private ToDoItemTagsViewModel _selectedtag;
 		private ToDoItemViewModel _selectedtoDoItem;
 
-		public ObservableCollection<ToDoItemViewModel> ToListItems { get; set; }
+		public ObservableCollection<ToDoItemViewModel> ToListItems { get; private set; }
 
 		private ICollectionView _ToListItemsSort;
 
@@ -38,14 +39,14 @@ namespace ToDoApplication.ViewModels
 		}
 
 		//public ICollectionView ToListItemsSort { get; set; }
-		public ObservableCollection<ToDoItemTagsViewModel> AvailableTags { get; }
-		public ActionCommand AddToDoCommand { get; }
+		public ObservableCollection<ToDoItemTagsViewModel> AvailableTags { get; private set; }
+		public AsyncCommand AddToDoCommand { get; }
 		public ActionCommand AddtagCommand { get; }
 		public ActionCommand ShowManageTagsDialogCommand { get; }
 
 		public ActionCommand SortNameCommand { get; }
 
-		public ActionCommand<ToDoItemViewModel> RemoveToDoCommand { get; }
+		public AsyncCommand<ToDoItemViewModel> RemoveToDoCommand { get;}
 		public ActionCommand<ToDoItemViewModel> UpdateToDoCommand { get; }
 
 		public string ToListValue
@@ -96,36 +97,42 @@ namespace ToDoApplication.ViewModels
 			_todoItemRepository = todoItemRepository;
 			_tagRepository = tagRepository;
 			_dialogService = dialogService;
-			AddToDoCommand = new ActionCommand(AddToList, ToListValueFocus);
-			RemoveToDoCommand = new ActionCommand<ToDoItemViewModel>(this.RemoveItem, this.selectedItemFocus);
-			UpdateToDoCommand = new ActionCommand<ToDoItemViewModel>(this.UpdateItem, this.selectedItemFocus);
-			AddtagCommand = new ActionCommand(AddTagtoSelectedTodOItem, canAddTag);
+
+			AddToDoCommand = new AsyncCommand(AddToList, ToListValueFocus);
+			RemoveToDoCommand = new AsyncCommand<ToDoItemViewModel>(this.RemoveItem, this.selectedItemFocus);
 			ShowManageTagsDialogCommand = new ActionCommand(ShowManageTagsDialog, () => true);
+			UpdateToDoCommand = new ActionCommand<ToDoItemViewModel>(this.UpdateItem, this.selectedItemFocus);
+
+
+			AddtagCommand = new ActionCommand(AddTagtoSelectedTodOItem, canAddTag);
 			SortNameCommand= new ActionCommand(SortName, () => true);
 			//CloseManageTagsDialogCommand = new ActionCommand(CloseManageTagsDialog, () => true);
 
+			
+		}
+
+        public override async Task onAttchedasync()
+        {
 			AvailableTags = new ObservableCollection<ToDoItemTagsViewModel>();
-			foreach (var tag in _tagRepository.GetAll())
+			var tags = await _tagRepository.GetAll();
+			foreach (var tag in tags)
 			{
 				AvailableTags.Add(new ToDoItemTagsViewModel(tag, _tagRepository));
 			}
-
+			RaisePropertyChanged(nameof(AvailableTags));
 			ToListItems = new ObservableCollection<ToDoItemViewModel>();
 			ToListItemsSort = CollectionViewSource.GetDefaultView(ToListItems);
 			ToListItemsSort.Filter = FilterListItems;
-			
-			foreach (var item in _todoItemRepository.GetAll())
+			var Items = await _todoItemRepository.GetAll();
+			foreach (var item in Items)
 			{
 				ToListItems.Add(CreateViewModelFromToDoItem(item));
 			}
-			
-
-
-
+			RaisePropertyChanged(nameof(ToListItems));
 
 		}
 
-		private void SortName()
+        private void SortName()
 		{
 			
 			if(lastDirection == ListSortDirection.Ascending)
@@ -148,16 +155,17 @@ namespace ToDoApplication.ViewModels
 		}
 
 		//AddToDOCommand ICommand 
-		public void AddToList()
+		public async Task AddToList()
 		{
 			if (!string.IsNullOrEmpty(ToListValue) && !string.IsNullOrEmpty(ToDoDescription))
 			{
 				var item = CreatetoDoItemModel(ToListValue, ToDoDescription);
 				var model = item.CreateModel();
 				ToListItems.Add(item);
-				_todoItemRepository.Add(model);
-				ToListValue = string.Empty;
-				ToDoDescription = string.Empty;
+				await _todoItemRepository.Add(model);
+				//ToListValue = string.Empty;
+				//ToDoDescription = string.Empty;
+
 			}
 		}
 		private bool ToListValueFocus()
@@ -166,12 +174,12 @@ namespace ToDoApplication.ViewModels
 		}
 
 		//RemoveToDoCommand UpdateToDOCommand Icommand
-		public void RemoveItem(ToDoItemViewModel vmToremove)
+		public async Task RemoveItem(ToDoItemViewModel vmToremove)
 		{
 			if (vmToremove != null)
 			{
 				ToListItems.Remove(vmToremove);
-				_todoItemRepository.Remove(vmToremove.Id);
+				await _todoItemRepository.Remove(vmToremove.Id);
 			}
 		}
 

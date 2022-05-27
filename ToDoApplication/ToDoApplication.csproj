@@ -98,6 +98,7 @@
     <Compile Include="AttachedProperties\ExampleProperties.cs" />
     <Compile Include="Behaviors\ScrollViewerHelper.cs" />
     <Compile Include="Command\ActionCommand.cs" />
+    <Compile Include="Command\AsyncCommand.cs" />
     <Compile Include="Converters\BackgroundColorConverter.cs" />
     <Compile Include="Converters\BoolToVisiblityConverter.cs" />
     <Compile Include="Converters\DateTimeToStringConverter.cs" />
@@ -138,6 +139,7 @@
     <Compile Include="UserControls\ToDoItemTag.xaml.cs">
       <DependentUpon>ToDoItemTag.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Util\AsyncVoidHelper.cs" />
     <Compile Include="Validation\Rules\NotEmptyValidationonRule.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\ManageTagsDialogViewModel.cs" />

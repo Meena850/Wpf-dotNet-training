@@ -52,11 +52,13 @@ namespace ToDoApplication.ViewModels
 		}
 		private bool NameIsNotunique()
 		{
-			var otherTagNames = _tagRepository
-				.GetAll()
-				.Where(tag => tag.Id != this.Id)
-				.Select(tag => tag.Name);
-			return otherTagNames.Contains(TagName);
+			return true;
+		//{
+		//	var otherTagNames = _tagRepository
+		//		.GetAll()
+		//		.Where(tag => tag.Id != this.Id)
+		//		.Select(tag => tag.Name);
+		//	return otherTagNames.Contains(TagName);
 		}
 
 		private TagColor _colors;
@@ -90,9 +92,9 @@ namespace ToDoApplication.ViewModels
 
 		private IEnumerable<Guid> _referencetagId;
 
-		public ActionCommand AddTagCommand { get; }
+		public AsyncCommand AddTagCommand { get; }
         
-		public ActionCommand RemoveTagCommand { get; }
+		public AsyncCommand RemoveTagCommand { get; }
 
 		public ActionCommand CloseManageTagsDialogCommand { get; }
 
@@ -103,8 +105,8 @@ namespace ToDoApplication.ViewModels
 		{
 			Tags = tags;
 			_referencetagId = referencetagId;
-			AddTagCommand = new ActionCommand(AddTag, CanAddTag);
-			RemoveTagCommand = new ActionCommand(RemoveTag, CanRemoveTag);
+			AddTagCommand = new AsyncCommand(AddTag, CanAddTag);
+			RemoveTagCommand = new AsyncCommand(RemoveTag, CanRemoveTag);
 			CloseManageTagsDialogCommand = new ActionCommand(CloseManageTagsDialog, () => true);
 			_dialogService = dialogService;
 			_tagRepository = tagRepository;
@@ -150,9 +152,9 @@ namespace ToDoApplication.ViewModels
 
 		}
 
-		private void RemoveTag()
+		private async Task RemoveTag()
 		{
-			_tagRepository.Remove(Selectedtag.Id);
+			await _tagRepository.Remove(Selectedtag.Id);
 			Tags.Remove(Selectedtag);
 		}
 
@@ -162,7 +164,7 @@ namespace ToDoApplication.ViewModels
 			return !string.IsNullOrEmpty(TagName);
 		}
 
-		private async void AddTag()
+		private async Task AddTag()
 		{
 			if (!string.IsNullOrEmpty(TagName))
 			{
@@ -171,21 +173,11 @@ namespace ToDoApplication.ViewModels
 					Id = Guid.NewGuid(),
 					Name = TagName,
 					Color = Colors,
-			};
-			Tags.Add(new ToDoItemTagsViewModel(tagModel, _tagRepository));
-				try 
-				{
-					await _tagRepository.Add(tagModel);
-				}catch(Exception ex)
-				{
-					Application.Current.Dispatcher.Invoke(() =>
-					{
-						throw ex;
-
-					});
-				}
-			 await _tagRepository.Add(tagModel);
+				};
+				Tags.Add(new ToDoItemTagsViewModel(tagModel, _tagRepository));
+				await _tagRepository.Add(tagModel);
 			}
+			
 		}
 
 		private ToDoItemTags creatItemTagsModel(ToDoItemTagsViewModel ITVM)
