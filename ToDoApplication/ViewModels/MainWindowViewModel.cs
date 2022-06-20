@@ -25,18 +25,18 @@ namespace ToDoApplication.ViewModels
 
 		private ICollectionView _ToListItemsSort;
 
-		public ICollectionView ToListItemsSort
-		{
-			get { 
-				return _ToListItemsSort;
-				ToListItemsSort.Refresh();
+		//public ICollectionView ToListItemsSort
+		//{
+		//	get { 
+		//		return _ToListItemsSort;
+		//		ToListItemsSort.Refresh();
 
-			}
-			set 
-			{
-				_ToListItemsSort = value;
-			}
-		}
+		//	}
+		//	set 
+		//	{
+		//		_ToListItemsSort = value;
+		//	}
+		//}
 
 		//public ICollectionView ToListItemsSort { get; set; }
 		public ObservableCollection<ToDoItemTagsViewModel> AvailableTags { get; private set; }
@@ -105,7 +105,7 @@ namespace ToDoApplication.ViewModels
 
 
 			AddtagCommand = new ActionCommand(AddTagtoSelectedTodOItem, canAddTag);
-			SortNameCommand= new ActionCommand(SortName, () => true);
+			//SortNameCommand= new ActionCommand(SortName, () => true);
 			//CloseManageTagsDialogCommand = new ActionCommand(CloseManageTagsDialog, () => true);
 
 			
@@ -121,8 +121,8 @@ namespace ToDoApplication.ViewModels
 			}
 			RaisePropertyChanged(nameof(AvailableTags));
 			ToListItems = new ObservableCollection<ToDoItemViewModel>();
-			ToListItemsSort = CollectionViewSource.GetDefaultView(ToListItems);
-			ToListItemsSort.Filter = FilterListItems;
+			//ToListItemsSort = CollectionViewSource.GetDefaultView(ToListItems);
+			//ToListItemsSort.Filter = FilterListItems;
 			var Items = await _todoItemRepository.GetAll();
 			foreach (var item in Items)
 			{
@@ -132,22 +132,22 @@ namespace ToDoApplication.ViewModels
 
 		}
 
-        private void SortName()
-		{
+  //      private void SortName()
+		//{
 			
-			if(lastDirection == ListSortDirection.Ascending)
-			{
-				ToListItemsSort.SortDescriptions.Clear();
-				ToListItemsSort.SortDescriptions.Add(new SortDescription(nameof(ToDoItemViewModel.Name), ListSortDirection.Descending));
-				lastDirection = ListSortDirection.Descending;
-			}
-			else
-			{
-				ToListItemsSort.SortDescriptions.Clear();
-				ToListItemsSort.SortDescriptions.Add(new SortDescription(nameof(ToDoItemViewModel.Name), ListSortDirection.Ascending));
-				lastDirection = ListSortDirection.Ascending;
-			}
-		}
+		//	if(lastDirection == ListSortDirection.Ascending)
+		//	{
+		//		ToListItemsSort.SortDescriptions.Clear();
+		//		ToListItemsSort.SortDescriptions.Add(new SortDescription(nameof(ToDoItemViewModel.Name), ListSortDirection.Descending));
+		//		lastDirection = ListSortDirection.Descending;
+		//	}
+		//	else
+		//	{
+		//		ToListItemsSort.SortDescriptions.Clear();
+		//		ToListItemsSort.SortDescriptions.Add(new SortDescription(nameof(ToDoItemViewModel.Name), ListSortDirection.Ascending));
+		//		lastDirection = ListSortDirection.Ascending;
+		//	}
+		//}
 
 		private bool FilterListItems(object obj)
 		{

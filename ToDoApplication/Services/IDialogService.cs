@@ -12,6 +12,8 @@ namespace ToDoApplication.Services
 	{
 		void ShowManageTagsDialog(ObservableCollection<ToDoItemTagsViewModel> tags, IEnumerable<Guid> refernceIds);
 
-		void closeManageTagsDialog();
+		void ShowErrorDailog(string message);
+
+		//void closeManageTagsDialog();
 	}
 }

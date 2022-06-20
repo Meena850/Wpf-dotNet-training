@@ -5,25 +5,14 @@
     xmlns:customControls="clr-namespace:ToDoApplication.UserControls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:ToDoApplication.Dialogs"
+    xmlns:mat="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:rules="clr-namespace:ToDoApplication.Validation.Rules"
     Width="600"
     Height="300"
     mc:Ignorable="d">
-    <!--<UserControl.Resources>
-        <ControlTemplate x:Key="ErrorTemplate">
-            <TextBlock
-                Margin="4,0,0,0"
-                HorizontalAlignment="Center"
-                Foreground="Red"
-                Text="{Binding Path=[0].ErrorContent}" />
-        </ControlTemplate>
-    </UserControl.Resources>-->
     <Border>
-        <Border.Effect>
-            <DropShadowEffect ShadowDepth="3" Color="LightGray" />
-        </Border.Effect>
-        <Grid Background="white">
+        <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="*" />
@@ -31,27 +20,34 @@
             </Grid.RowDefinitions>
             <!--  header Text  -->
             <TextBlock
-                Margin="0,10,0,0"
-                Background="Gray"
-                Style="{StaticResource Headings}"
+                Margin="16,10,0,0"
+                Style="{StaticResource MaterialDesignHeadline5TextBlock}"
                 Text="Manage Tags" />
             <Rectangle Height="1" VerticalAlignment="Bottom" />
 
             <!--  Content  -->
             <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="107*" />
+                    <ColumnDefinition Width="493*" />
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <!--  textBox  -->
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <Grid>
+                <Grid Grid.ColumnSpan="2" Margin="0,0,0,0.4">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*" />
-                        <ColumnDefinition Width="1*" />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
+                        <ColumnDefinition Width="150" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <Grid Grid.Row="0">
+                    <Grid
+                        Grid.Row="0"
+                        Grid.ColumnSpan="2"
+                        Margin="0,0,0.4,0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
@@ -79,30 +75,29 @@
                             Visibility="{Binding ElementName=TagNameTop, Path=(Validation.HasError), Converter={StaticResource boolToVisibilityConverter}}" />
 
                     </Grid>
-
-                    <!--<TextBox
-						x:Name="colors"
-						Grid.Column="1"
-						Margin="3"
-						Text="{Binding Colors, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />-->
-
                     <ComboBox
                         Grid.Column="1"
+                        Grid.ColumnSpan="3"
+                        Margin="60,7,149.4,6"
                         ItemsSource="{Binding AvailableColours}"
                         SelectedItem="{Binding Colors, Mode=TwoWay}" />
                     <Button
-                        Grid.Column="2"
-                        Margin="3"
-                        Command="{Binding AddTagCommand}"
-                        Content="AddTag" />
-                    <Button
                         Grid.Column="3"
-                        Margin="3"
+                        Margin="3.2,3,3.4,3"
+                        Command="{Binding AddTagCommand}"
+                        Content="{mat:PackIcon Kind=Plus}"
+                        Style="{StaticResource MaterialDesignFlatButton}" />
+                    <Button
+                        Grid.Column="4"
+                        Margin="2.6,3,3,3"
                         Command="{Binding RemoveTagCommand}"
-                        Content="RemoveTag" />
+                        Content="{mat:PackIcon Kind=DeleteCircle}"
+                        Style="{StaticResource MaterialDesignFlatButton}" />
                 </Grid>
                 <ListBox
-                    Grid.Row="1"
+                    Grid.RowSpan="2"
+                    Grid.ColumnSpan="2"
+                    Margin="0,38,0,0.4"
                     ItemsSource="{Binding Tags}"
                     SelectedItem="{Binding Selectedtag, Mode=TwoWay}">
                     <ListBox.ItemContainerStyle>
@@ -182,9 +177,9 @@
                     x:Name="CloseButton"
                     Grid.Column="1"
                     HorizontalAlignment="Right"
-                    Command="{Binding CloseManageTagsDialogCommand}"
-                    Content="CLose"
-                    Style="{StaticResource MaterialDesignButton}" />
+                    Command="{x:Static mat:DialogHost.CloseDialogCommand}"
+                    Content="CLOSE"
+                    Style="{StaticResource MaterialDesignFlatButton}" />
             </Grid>
 
         </Grid>

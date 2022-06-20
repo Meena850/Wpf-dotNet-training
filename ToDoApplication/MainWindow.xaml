@@ -8,6 +8,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:data="clr-namespace:ToDoApplication.Model"
     xmlns:local="clr-namespace:ToDoApplication"
+    xmlns:mat="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:me="clr-namespace:ToDoApplication.MarkUpExtension"
     xmlns:p="clr-namespace:ToDoApplication.Properties"
@@ -17,6 +18,7 @@
     Width="950"
     Height="550"
     DataContext="{me:ViewModelProvider ViewModeltype={x:Type VM:MainWindowViewModel}}"
+    Foreground="{StaticResource MaterialDesignBody}"
     Style="{StaticResource MainWindowStyle}">
     <Grid>
         <Grid x:Name="rootGrid" Margin="30">
@@ -44,27 +46,27 @@
                 Grid.Column="0"
                 Grid.ColumnSpan="2"
                 HorizontalAlignment="Center"
-                Style="{StaticResource Headings}"
+                Style="{StaticResource MaterialDesignHeadline6TextBlock}"
                 Text="{x:Static p:Resources.AppTittle}" />
             <!--  TextBox + AddButton  -->
             <StackPanel
                 Grid.Row="1"
                 Grid.Column="0"
                 Orientation="Vertical">
-                <TextBlock Style="{StaticResource SubHeadings}" Text="ADD-DETAILS" />
-                <TextBlock Style="{StaticResource txtBlockResource}" Text="ToDoName" />
+                <TextBlock HorizontalAlignment="Center" Text="Add Details" />
+                <TextBlock Text="ToDoName" />
                 <TextBox
                     Name="txtTodo"
                     properties:ExampleProperties.SetBackgroundColorWhenEmpty="True"
                     properties:ExampleProperties.TextEmptyBrush="Green"
                     Style="{StaticResource txtBoxResource}"
                     Text="{Binding ToListValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                <TextBlock Style="{StaticResource txtBlockResource}" Text="ToDoDescription" />
+                <TextBlock Text="ToDoDescription" />
                 <TextBox
                     Name="txtTodoDescription"
                     Style="{StaticResource txtBoxResource}"
                     Text="{Binding ToDoDescription, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                <TextBlock Style="{StaticResource txtBlockResource}" Text="Add ToDo Tags" />
+                <TextBlock Style="{StaticResource txtBlockResource}" Text="Add Tags" />
                 <StackPanel Orientation="Horizontal">
                     <ComboBox
                         Width="140"
@@ -82,7 +84,7 @@
                         Margin="2,0,0,0"
                         Command="{Binding AddtagCommand}"
                         Content="Add"
-                        Style="{StaticResource MaterialDesignButton}" />
+                        Style="{StaticResource MaterialDesignRaisedDarkButton}" />
 
                 </StackPanel>
             </StackPanel>
@@ -94,10 +96,17 @@
                 Orientation="Horizontal">
                 <Button
                     x:Name="addButton"
-                    Background="{x:Null}"
+                    Padding="8,4,8,4"
+                    VerticalAlignment="Center"
                     Command="{Binding AddToDoCommand}"
-                    Content="AddToList"
-                    Style="{StaticResource MaterialDesignButton}" />
+                    Style="{StaticResource MaterialDesignRaisedDarkButton}">
+
+                    <StackPanel Orientation="Horizontal">
+                        <mat:PackIcon VerticalAlignment="Center" Kind="Plus" />
+                        <TextBlock Text="Add Todo" />
+                    </StackPanel>
+
+                </Button>
             </StackPanel>
             <StackPanel
                 Grid.Row="2"
@@ -110,14 +119,13 @@
                     x:Name="manageBtn"
                     Margin="5,0,0,0"
                     Command="{Binding ShowManageTagsDialogCommand}"
-                    Content="Manage Tags"
-                    Style="{StaticResource MaterialDesignButton}" />
+                    Content="Manage Tags" />
             </StackPanel>
             <StackPanel
                 Grid.Row="1"
                 Grid.Column="1"
                 Orientation="Vertical">
-                <TextBlock Style="{StaticResource SubHeadings}" Text="TO-DO LIST" />
+                <TextBlock Style="{StaticResource SubHeadings}" Text="Todo item List" />
                 <!--  ToDo List  -->
                 <!--<ScrollViewer>-->
                 <ListView
@@ -184,8 +192,8 @@
                                             Grid.Column="4"
                                             Command="{Binding DataContext.RemoveToDoCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}}"
                                             CommandParameter="{Binding}"
-                                            Content="Remove"
-                                            Style="{StaticResource buttonResource}" />
+                                            Content="{mat:PackIcon Kind=Delete}"
+                                            Style="{StaticResource MaterialDesignFlatLightButton}" />
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
@@ -227,6 +235,6 @@
 
 
         </Grid>
-        <ContentControl x:Name="DialogHost" />
+        <mat:DialogHost Name="DialogHost" />
     </Grid>
 </Window>

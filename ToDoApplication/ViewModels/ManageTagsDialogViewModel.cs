@@ -107,7 +107,7 @@ namespace ToDoApplication.ViewModels
 			_referencetagId = referencetagId;
 			AddTagCommand = new AsyncCommand(AddTag, CanAddTag);
 			RemoveTagCommand = new AsyncCommand(RemoveTag, CanRemoveTag);
-			CloseManageTagsDialogCommand = new ActionCommand(CloseManageTagsDialog, () => true);
+			//CloseManageTagsDialogCommand = new ActionCommand(CloseManageTagsDialog, () => true);
 			_dialogService = dialogService;
 			_tagRepository = tagRepository;
 			UpdateTagsCommand = new ActionCommand<ToDoItemTagsViewModel>(UpdateTags, CanUpdatetags);
@@ -133,10 +133,10 @@ namespace ToDoApplication.ViewModels
 			_tagRepository.Update(model);
 		}
 
-		private void CloseManageTagsDialog()
-		{
-			_dialogService.closeManageTagsDialog();
-		}
+		//private void CloseManageTagsDialog()
+		//{
+		//	_dialogService.closeManageTagsDialog();
+		//}
 
 		private bool CanRemoveTag()
 		{

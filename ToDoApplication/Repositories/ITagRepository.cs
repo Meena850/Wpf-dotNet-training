@@ -5,16 +5,17 @@ using System.Text;
 using System.Threading.Tasks;
 using ToDoApplication.CustomControls;
 using ToDoApplication.Model;
+using ToDoApplication.Util;
 
 namespace ToDoApplication.Repositories
 {
 	internal interface ITagRepository
 	{
-		Task<List<ToDoItemTags>> GetAll();
-		Task Add(ToDoItemTags tag);
+		Task<Result<List<ToDoItemTags>>> GetAll();
+		Task<Result<Unit>> Add(ToDoItemTags tag);
 
-		Task Remove(Guid tagId);
+		Task<Result<Unit>> Remove(Guid tagId);
 
-		Task Update(ToDoItemTags item);
+		Task<Result<Unit>> Update(ToDoItemTags item);
 	}
 }

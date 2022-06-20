@@ -83,10 +83,13 @@ namespace ToDoApplication.ViewModels
 
         private async Task<bool> NameIsNotunique()
         {
-			var otherTagNames = (await _tagRepository
-				.GetAll())
-				.Where(tag => tag.Id != this.Id)
-				.Select(tag => tag.Name);
+			var tagsResult = (await _tagRepository
+				.GetAll());
+			if (!tagsResult.WasSuccessful)
+				return true; // TODO: Show Error dialog
+			var otherTagNames = tagsResult.Value
+		   .Where(tag => tag.Id != this.Id)
+		   .Select(tag => tag.Name);
 			return otherTagNames.Contains(Name);
 		}
 

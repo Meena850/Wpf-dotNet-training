@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MaterialDesignThemes.Wpf;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -24,18 +25,24 @@ namespace ToDoApplication.Services
 			managetagsDialog.DataContext = new ManageTagsDialogViewModel(tags, refernceIds,this, _tagRepository);
 			setDialogHostContent(managetagsDialog);
 		}
-
-		public  void closeManageTagsDialog()
-		{
-			setDialogHostContent(null);
-		}
-
 		private static void setDialogHostContent(object content)
 		{
-			var mainWindow = Application.Current.MainWindow as MainWindow;
-			mainWindow.DialogHost.Content = content;
-
+			DialogHost.Show(content);
 		}
 
+
+		public void ShowErrorDailog(string message)
+		{
+			var errorDialog = new ErrorDialogs();
+
+			errorDialog.DataContext = message;
+
+			SetDialogHostContent(errorDialog);
+		}
+
+		private static void SetDialogHostContent(object content)
+		{
+			DialogHost.Show(content);
+		}
 	}
 }

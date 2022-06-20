@@ -27,10 +27,10 @@ namespace ToDOApplication.IntegrationTest.Repositories.TagRepositoryTest
             var tagItemTestFile = CopyFileTotestDir("GetAllTagFile.json");
             var repository = CreateSut(tagItemTestFile);
             //Act
-            var tags = await repository.GetAll();
+            var tagsResult = await repository.GetAll();
 
             //Assert
-            tags.Count.ShouldBe(4);
+            tagsResult.Value.Count.ShouldBe(4);
         }
 
         [TestMethod]

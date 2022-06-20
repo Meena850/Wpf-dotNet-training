@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -17,7 +15,8 @@ namespace ToDoApplication.Util
             }
             catch(Exception ex)
             {
-                Application.Current.Dispatcher.Invoke(() => throw ex);
+                var info = ExceptionDispatchInfo.Capture(ex);
+                Application.Current.Dispatcher.Invoke(() => info.Throw());
             }
         }
     }

@@ -25,10 +25,5 @@ namespace ToDoApplication.Dialogs
 		{
 			InitializeComponent();
 		}
-
-		//private void CloseButton_Click(object sender, RoutedEventArgs e)
-		//{
-		//	DialogService.closeManageTagsDialog();
-		//}
 	}
 }

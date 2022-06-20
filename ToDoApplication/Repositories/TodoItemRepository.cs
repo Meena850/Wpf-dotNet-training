@@ -99,7 +99,7 @@ namespace ToDoApplication.Repositories
 		{
 			using (var memStream = new MemoryStream(Encoding.UTF8.GetBytes(content)))
 			{
-				using (var fileStream = File.OpenWrite(fileName))
+				using (var fileStream = File.Open(fileName, FileMode.Create))
 				{
 					await memStream.CopyToAsync(fileStream);
 				}

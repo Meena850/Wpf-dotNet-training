@@ -146,6 +146,10 @@
       <DependentUpon>ToDoItemTag.xaml</DependentUpon>
     </Compile>
     <Compile Include="Util\AsyncVoidHelper.cs" />
+    <Compile Include="Util\FileHelper.cs" />
+    <Compile Include="Util\Result.cs" />
+    <Compile Include="Util\ResultExtensions.cs" />
+    <Compile Include="Util\Unit.cs" />
     <Compile Include="Validation\Rules\NotEmptyValidationonRule.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\ManageTagsDialogViewModel.cs" />

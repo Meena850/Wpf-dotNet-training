@@ -40,7 +40,7 @@ namespace ToDoApplication.Command
     }
     internal class AsyncCommand<T> : ICommand where T : class
     {
-        private readonly Func<T, Task> _execute;
+        private readonly Func<T, Task> _execute;    
         private readonly Func<T, bool> _canExecute;
 
         public event EventHandler CanExecuteChanged;
@@ -52,14 +52,13 @@ namespace ToDoApplication.Command
         }
         public bool CanExecute(object parameter)
         {
-            T param = parameter as T;
-            return _canExecute(param);
+            return _canExecute(parameter as T);
         }
 
         public void Execute(object parameter)
         {
-            T param = parameter as T;
-            _execute(param);
+
+           AsyncVoidHelper.TryThrowOnDispatcher(() => _execute(parameter as T));
         }
         public void RaiseCanExecuteChanged()
         {

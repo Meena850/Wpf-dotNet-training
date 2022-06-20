@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ToDoApplication.Model;
 using ToDoApplication.Services;
+using ToDoApplication.Util;
 
 namespace ToDoApplication.Repositories
 {
@@ -17,40 +18,81 @@ namespace ToDoApplication.Repositories
 		{
 			_configService = configService;
 		}
-		public async Task Add(ToDoItemTags tag)
+		public async Task<Result<Unit>> Add(ToDoItemTags tag)
 		{
-			var tags = await GetAll();
-			tags.Add(tag);
-			await saveItems (tags);
-		}
-
-		public async Task<List<ToDoItemTags>> GetAll()
-		{
-			if (_configService.TagItemFile.Exists)
+			var tagsResult = await GetAll();
+			if (tagsResult.WasSuccessful)
 			{
-				string json = await ReadFileAsync(_configService.TagItemFile.FullName);
-				if (!string.IsNullOrEmpty(json))
-					return JsonConvert.DeserializeObject<List<ToDoItemTags>>(json);
+				var tags = tagsResult.Value;
+				tags.Add(tag);
+				await saveItems(tags);
+				return Result.CreateSuccess();
 			}
-			return new List<ToDoItemTags>();
+			else
+			{
+				return tagsResult.Map(_ => Unit.Default);
+			}
 		}
 
-		public async Task Remove(Guid tagId)
+		public async Task<Result<List<ToDoItemTags>>> GetAll()
 		{
-			var tags = await GetAll();
-			var tagtoremove = tags.Single(tag => tag.Id == tagId);
-			tags.Remove(tagtoremove);
-			await saveItems(tags);
+			var tagFile = _configService.TagItemFile;
+			if (tagFile.Exists)
+			{
+				try 
+				{
+					var tagItemStringresult = await FileHelper.ReadFileAsync(tagFile.FullName);
+					return tagItemStringresult.Map(JsonConvert.DeserializeObject<List<ToDoItemTags>>);
+				}
+				catch(Exception ex)
+                {
+					return new Error<List<ToDoItemTags>>($"Failed to load tag list from file: {ex.Message}");
+				}
+			}
+			else
+			{
+				return Result.CreateSuccess(new List<ToDoItemTags>());
+			}
 		}
 
-		public async Task Update(ToDoItemTags tagItem)
+		public async Task<Result<Unit>> Remove(Guid tagId)
 		{
-			List<ToDoItemTags> updateinItems = await GetAll();
-			var itemToUpdate = updateinItems.Single(items => items.Id == tagItem.Id);
-			//itemToUpdate.Id = tagItem.Id;
-			itemToUpdate.Name = tagItem.Name;
-			itemToUpdate.Color = tagItem.Color;
-			await saveItems(updateinItems);
+			var tagsResult = await GetAll();
+			if (tagsResult.WasSuccessful)
+			{
+				var tags = tagsResult.Value;
+				var tagtoremove = tags.Single(tag => tag.Id == tagId);
+				tags.Remove(tagtoremove);
+				await saveItems(tags);
+				return Result.CreateSuccess();
+			}
+			else
+            {
+				return tagsResult.Map(_ => Unit.Default);
+            }
+		}
+
+		public async Task<Result<Unit>> Update(ToDoItemTags tagItem)
+		{
+			var tagsResult = await GetAll();
+			if (tagsResult.WasSuccessful)
+			{
+
+				var tags = tagsResult.Value;
+				var itemToUpdate = tags.Single(items => items.Id == tagItem.Id);
+				//itemToUpdate.Id = tagItem.Id;
+				itemToUpdate.Name = tagItem.Name;
+				itemToUpdate.Color = tagItem.Color;
+				await saveItems(tags);
+				return Result.CreateSuccess();
+
+
+			} 
+			else
+			{
+				return tagsResult.Map(_ => Unit.Default);
+
+			}
 		}
 		private async Task saveItems(List<ToDoItemTags> items)
 		{
@@ -69,20 +111,11 @@ namespace ToDoApplication.Repositories
 			}
 
 		}
-
-		private async Task<string> ReadFileAsync(string filename)
-		{
-			using (var streamReader = new StreamReader(File.OpenRead(filename)))
-			{
-				return await streamReader.ReadToEndAsync();
-			}
-		}
-
 		private async Task WriteFileAsync(string fileName, string content)
         {
 			using (var memStream = new MemoryStream(Encoding.UTF8.GetBytes(content)))
             {
-				using (var fileStream = File.OpenWrite(fileName))
+				using (var fileStream = File.Open(fileName, FileMode.Create))
                 {
 					await memStream.CopyToAsync(fileStream);
                 }
