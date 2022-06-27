@@ -41,6 +41,9 @@
     <Reference Include="Autofac, Version=6.3.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\packages\Autofac.6.3.0\lib\netstandard2.0\Autofac.dll</HintPath>
     </Reference>
+    <Reference Include="log4net, Version=2.0.14.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.14\lib\net45\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="MaterialDesignColors, Version=2.0.6.0, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignColors.2.0.6\lib\net452\MaterialDesignColors.dll</HintPath>
     </Reference>
@@ -57,6 +60,7 @@
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
     </Reference>
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Diagnostics.DiagnosticSource.4.7.1\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
@@ -83,6 +87,7 @@
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -113,6 +118,9 @@
     <Compile Include="Converters\UpercaseConverter.cs" />
     <Compile Include="CustomControls\testingBackgroiund.cs" />
     <Compile Include="CustomControls\ToDoItemTag.cs" />
+    <Compile Include="Dialogs\ErrorDialog.xaml.cs">
+      <DependentUpon>ErrorDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\ManageTagsDialog.xaml.cs">
       <DependentUpon>ManageTagsDialog.xaml</DependentUpon>
     </Compile>
@@ -121,6 +129,7 @@
     <Compile Include="MarkUpExtension\PlaceHolderTextExtension.cs" />
     <Compile Include="MarkUpExtension\TagColorConverterExtension.cs" />
     <Compile Include="MarkUpExtension\ViewModelProviderExtension.cs" />
+    <Compile Include="Model\BaseEntity.cs" />
     <Compile Include="Model\TagColor.cs" />
     <Compile Include="Model\ToDoItemModel.cs" />
     <Compile Include="Model\ToDoItemTags.cs" />
@@ -129,6 +138,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.de-DE.resx</DependentUpon>
     </Compile>
+    <Compile Include="Repositories\FileBasedRepository.cs" />
+    <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Repositories\ITagRepository.cs" />
     <Compile Include="Repositories\ITodoItemRepository.cs" />
     <Compile Include="Repositories\TagRepository.cs" />
@@ -157,6 +168,10 @@
     <Compile Include="ViewModels\ToDoItemViewModel.cs" />
     <Compile Include="ViewModels\ValidationViewModelbase.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Page Include="Dialogs\ErrorDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Dialogs\ManageTagsDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -235,6 +250,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.de-DE.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Log4net.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

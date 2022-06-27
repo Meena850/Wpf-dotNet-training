@@ -17,62 +17,124 @@
     Title="ToDo HMI Application"
     Width="950"
     Height="550"
+    Background="White"
     DataContext="{me:ViewModelProvider ViewModeltype={x:Type VM:MainWindowViewModel}}"
     Foreground="{StaticResource MaterialDesignBody}"
     Style="{StaticResource MainWindowStyle}">
     <Grid>
-        <Grid x:Name="rootGrid" Margin="30">
-            <Grid.ColumnDefinitions>
-                <!--  TextBox + TodoList  -->
-                <ColumnDefinition Width="300" />
-                <!--  Button + InActive List  -->
-                <ColumnDefinition Width="*" />
-
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <!--  header  -->
-                <!--  TextBox + AddButton  -->
-                <RowDefinition Height="40" />
-                <!--  TextBlock List  -->
-                <RowDefinition Height="*" />
-                <!--  List Box  -->
-                <!--<RowDefinition Height="*"/> -->
-                <!--  Button activity  -->
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <!--  header  -->
+        <Grid.RowDefinitions>
+            <!--  Header  -->
+            <RowDefinition Height="50" />
+            <!--  Todo App  -->
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Background="#000051">
             <TextBlock
-                Grid.Row="0"
-                Grid.Column="0"
                 Grid.ColumnSpan="2"
                 HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontWeight="Bold"
+                Foreground="White"
                 Style="{StaticResource MaterialDesignHeadline6TextBlock}"
                 Text="{x:Static p:Resources.AppTittle}" />
-            <!--  TextBox + AddButton  -->
-            <StackPanel
-                Grid.Row="1"
-                Grid.Column="0"
-                Orientation="Vertical">
-                <TextBlock HorizontalAlignment="Center" Text="Add Details" />
-                <TextBlock Text="ToDoName" />
-                <TextBox
-                    Name="txtTodo"
-                    properties:ExampleProperties.SetBackgroundColorWhenEmpty="True"
-                    properties:ExampleProperties.TextEmptyBrush="Green"
-                    Style="{StaticResource txtBoxResource}"
-                    Text="{Binding ToListValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                <TextBlock Text="ToDoDescription" />
-                <TextBox
-                    Name="txtTodoDescription"
-                    Style="{StaticResource txtBoxResource}"
-                    Text="{Binding ToDoDescription, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                <TextBlock Style="{StaticResource txtBlockResource}" Text="Add Tags" />
-                <StackPanel Orientation="Horizontal">
+
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <!--  TextBox + Add Buttons  -->
+                <ColumnDefinition Width="*" />
+                <!--  Todo items ListView  -->
+                <ColumnDefinition Width="1.5*" />
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <!--  To Do Item Header  -->
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.ColumnSpan="2"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Foreground="#000051"
+                        Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                        Text="ToDo Items" />
+                    <TextBox
+                        Name="txtTodo"
+                        Grid.Row="1"
+                        Width="250"
+                        Height="35"
+                        Margin="20"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        mat:HintAssist.Hint="Name"
+                        properties:ExampleProperties.SetBackgroundColorWhenEmpty="True"
+                        properties:ExampleProperties.TextEmptyBrush="Green"
+                        FontSize="13"
+                        Text="{Binding ToListValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                    <TextBox
+                        Name="txtTodoDescription"
+                        Grid.Row="2"
+                        Width="250"
+                        Height="35"
+                        Margin="20"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        mat:HintAssist.Hint="Description"
+                        FontSize="13"
+                        Text="{Binding ToDoDescription, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                    <Button
+                        x:Name="addButton"
+                        Grid.Row="3"
+                        Width="110"
+                        VerticalAlignment="Center"
+                        mat:ButtonAssist.CornerRadius="15"
+                        mat:ShadowAssist.ShadowAnimationDuration="0:0:0.5"
+                        Background="#000051"
+                        Command="{Binding AddToDoCommand}"
+                        Style="{StaticResource MaterialDesignRaisedDarkButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <mat:PackIcon
+                                Margin="-3"
+                                VerticalAlignment="Center"
+                                Kind="Plus" />
+                            <TextBlock Text="Add Todo" />
+                        </StackPanel>
+
+                    </Button>
+                </Grid>
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="60" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.ColumnSpan="2"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Foreground="#000051"
+                        Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                        Text="Tags" />
                     <ComboBox
-                        Width="140"
-                        Margin="50,0,0,0"
+                        Grid.Row="1"
+                        Width="250"
+                        Margin="10"
+                        VerticalAlignment="Center"
+                        mat:HintAssist.Hint="Select a tag"
                         ItemsSource="{Binding AvailableTags}"
-                        SelectedItem="{Binding selectedtag, Mode=TwoWay}">
+                        SelectedItem="{Binding selectedtag, Mode=TwoWay}"
+                        Style="{StaticResource MaterialDesignOutlinedComboBox}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate DataType="VM:ToDoItemTagsViewModel">
                                 <customControls:ToDoItemTag Background="{Binding Color, Converter={me:TagColorConverter}}" TagText="{Binding Name}" />
@@ -81,64 +143,72 @@
                     </ComboBox>
                     <Button
                         x:Name="addTagButton"
+                        Grid.Row="2"
+                        Width="110"
                         Margin="2,0,0,0"
+                        VerticalAlignment="Top"
+                        mat:ButtonAssist.CornerRadius="15"
+                        mat:ShadowAssist.ShadowAnimationDuration="0:0:0.5"
+                        Background="#000051"
                         Command="{Binding AddtagCommand}"
-                        Content="Add"
-                        Style="{StaticResource MaterialDesignRaisedDarkButton}" />
+                        Style="{StaticResource MaterialDesignRaisedDarkButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <mat:PackIcon
+                                Margin="-3"
+                                VerticalAlignment="Center"
+                                Kind="Plus" />
+                            <TextBlock Text="Add Tag" />
+                        </StackPanel>
 
-                </StackPanel>
-            </StackPanel>
-            <StackPanel
-                Grid.Row="2"
-                Grid.Column="0"
-                Margin="5"
-                HorizontalAlignment="Center"
-                Orientation="Horizontal">
-                <Button
-                    x:Name="addButton"
-                    Padding="8,4,8,4"
-                    VerticalAlignment="Center"
-                    Command="{Binding AddToDoCommand}"
-                    Style="{StaticResource MaterialDesignRaisedDarkButton}">
 
-                    <StackPanel Orientation="Horizontal">
-                        <mat:PackIcon VerticalAlignment="Center" Kind="Plus" />
-                        <TextBlock Text="Add Todo" />
-                    </StackPanel>
+                    </Button>
 
-                </Button>
-            </StackPanel>
-            <StackPanel
-                Grid.Row="2"
-                Grid.Column="1"
-                Margin="5"
-                HorizontalAlignment="Right"
-                Background="Black"
-                Orientation="Horizontal">
-                <Button
-                    x:Name="manageBtn"
-                    Margin="5,0,0,0"
-                    Command="{Binding ShowManageTagsDialogCommand}"
-                    Content="Manage Tags" />
-            </StackPanel>
-            <StackPanel
-                Grid.Row="1"
-                Grid.Column="1"
-                Orientation="Vertical">
-                <TextBlock Style="{StaticResource SubHeadings}" Text="Todo item List" />
-                <!--  ToDo List  -->
-                <!--<ScrollViewer>-->
+
+
+                </Grid>
+            </Grid>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox
+                        Grid.Column="0"
+                        Margin="5"
+                        VerticalAlignment="Bottom"
+                        mat:HintAssist.Hint="Search Todo Items"
+                        mat:TextFieldAssist.HasLeadingIcon="True"
+                        mat:TextFieldAssist.LeadingIcon="Search"
+                        Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" />
+                    <Button
+                        x:Name="manageBtn"
+                        Grid.Column="1"
+                        Width="130"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        mat:ButtonAssist.CornerRadius="15"
+                        mat:ShadowAssist.ShadowAnimationDuration="0:0:0.5"
+                        Background="#000051"
+                        Command="{Binding ShowManageTagsDialogCommand}"
+                        Content="Manage Tags" />
+
+                </Grid>
                 <ListView
                     x:Name="lstTodo"
                     Grid.Row="1"
                     Grid.Column="1"
-                    Height="180"
-                    Margin="0,0,0,0"
+                    Height="Auto"
+                    Margin="5"
                     b:ScrollViewerHelper.AutoScroll="True"
                     ItemsSource="{Binding ToListItems}"
                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                     SelectedItem="{Binding selectedtoDoItem, Mode=TwoWay}"
-                    Style="{StaticResource ToListResource}">
+                    Style="{StaticResource MaterialDesignListView}">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn>
@@ -187,13 +257,14 @@
                                 <GridViewColumnHeader Content="Remove Item" />
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
+
                                         <Button
                                             Name="btnremove"
                                             Grid.Column="4"
-                                            Command="{Binding DataContext.RemoveToDoCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}}"
-                                            CommandParameter="{Binding}"
+                                            Command="{x:Static mat:DialogHost.OpenDialogCommand}"
                                             Content="{mat:PackIcon Kind=Delete}"
-                                            Style="{StaticResource MaterialDesignFlatLightButton}" />
+                                            Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" />
+
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
@@ -213,7 +284,6 @@
                                             </ItemsControl.ItemsPanel>
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
-
                                                     <customControls:ToDoItemTag
                                                         Background="{Binding Color, Converter={StaticResource TagColorConverter}}"
                                                         RemoveTagCommand="{Binding DataContext.RemoveTagCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ItemsControl}}"
@@ -229,12 +299,11 @@
                         </GridView>
                     </ListView.View>
                 </ListView>
-                <!--</ScrollViewer>-->
-                <TextBlock Text="{me:PlaceHolderText TextLength=4}" />
-            </StackPanel>
-
-
+            </Grid>
         </Grid>
-        <mat:DialogHost Name="DialogHost" />
+        <mat:DialogHost
+            Name="DialogHost"
+            HorizontalAlignment="Right"
+            Placement="Bottom" />
     </Grid>
 </Window>

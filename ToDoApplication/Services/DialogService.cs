@@ -23,17 +23,12 @@ namespace ToDoApplication.Services
 		{
 			var managetagsDialog = new ManageTagsDialog();
 			managetagsDialog.DataContext = new ManageTagsDialogViewModel(tags, refernceIds,this, _tagRepository);
-			setDialogHostContent(managetagsDialog);
-		}
-		private static void setDialogHostContent(object content)
-		{
-			DialogHost.Show(content);
+			SetDialogHostContent(managetagsDialog);
 		}
 
-
-		public void ShowErrorDailog(string message)
+		public void ShowErrorDialog(string message)
 		{
-			var errorDialog = new ErrorDialogs();
+			var errorDialog = new ErrorDialog();
 
 			errorDialog.DataContext = message;
 

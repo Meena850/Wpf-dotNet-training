@@ -1,4 +1,5 @@
-﻿using System;
+﻿using log4net;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace ToDoApplication.ViewModels
 {
 	internal class MainWindowViewModel : ViewModelBase
 	{
+		private static readonly ILog Log = LogManager.GetLogger(typeof(MainWindowViewModel));
 		private string _toListValue;
 		private string _toDoDescription;
 		private readonly ITodoItemRepository _todoItemRepository;
@@ -23,22 +25,21 @@ namespace ToDoApplication.ViewModels
 
 		public ObservableCollection<ToDoItemViewModel> ToListItems { get; private set; }
 
-		private ICollectionView _ToListItemsSort;
+        private ICollectionView _ToListItemsSort;
 
-		//public ICollectionView ToListItemsSort
-		//{
-		//	get { 
-		//		return _ToListItemsSort;
-		//		ToListItemsSort.Refresh();
+        public ICollectionView ToListItemsSort
+        {
+            get
+            {
+                return _ToListItemsSort;
 
-		//	}
-		//	set 
-		//	{
-		//		_ToListItemsSort = value;
-		//	}
-		//}
+            }
+            set
+            {
+                _ToListItemsSort = value;
+            }
+        }
 
-		//public ICollectionView ToListItemsSort { get; set; }
 		public ObservableCollection<ToDoItemTagsViewModel> AvailableTags { get; private set; }
 		public AsyncCommand AddToDoCommand { get; }
 		public ActionCommand AddtagCommand { get; }
@@ -89,10 +90,9 @@ namespace ToDoApplication.ViewModels
 		public ListSortDirection lastDirection;
 
 
-		public MainWindowViewModel(ITodoItemRepository todoItemRepository, 
+		public MainWindowViewModel(ITodoItemRepository todoItemRepository,
 			                       ITagRepository tagRepository,
-								   IDialogService dialogService,
-								   ILoggingService iloggingService)
+								   IDialogService dialogService)
 		{
 			_todoItemRepository = todoItemRepository;
 			_tagRepository = tagRepository;
@@ -105,7 +105,7 @@ namespace ToDoApplication.ViewModels
 
 
 			AddtagCommand = new ActionCommand(AddTagtoSelectedTodOItem, canAddTag);
-			//SortNameCommand= new ActionCommand(SortName, () => true);
+			SortNameCommand= new ActionCommand(SortName, () => true);
 			//CloseManageTagsDialogCommand = new ActionCommand(CloseManageTagsDialog, () => true);
 
 			
@@ -113,18 +113,31 @@ namespace ToDoApplication.ViewModels
 
         public override async Task onAttchedasync()
         {
+			Log.Debug("Attaching main window viewmodel...");
 			AvailableTags = new ObservableCollection<ToDoItemTagsViewModel>();
-			var tags = await _tagRepository.GetAll();
-			foreach (var tag in tags)
+			var tagsResult = await _tagRepository.GetAll();
+			if (!tagsResult.WasSuccessful)
+			{
+				_dialogService.ShowErrorDialog(tagsResult.Message);
+				return;
+			}
+			foreach (var tag in tagsResult.Value)
 			{
 				AvailableTags.Add(new ToDoItemTagsViewModel(tag, _tagRepository));
 			}
 			RaisePropertyChanged(nameof(AvailableTags));
+			
+
+			var todoItemsResult = await _todoItemRepository.GetAll();
+			if (!todoItemsResult.WasSuccessful)
+			{
+				_dialogService.ShowErrorDialog(todoItemsResult.Message);
+				Log.Error(todoItemsResult.Message);
+				return;
+			}
+
 			ToListItems = new ObservableCollection<ToDoItemViewModel>();
-			//ToListItemsSort = CollectionViewSource.GetDefaultView(ToListItems);
-			//ToListItemsSort.Filter = FilterListItems;
-			var Items = await _todoItemRepository.GetAll();
-			foreach (var item in Items)
+			foreach (var item in todoItemsResult.Value)
 			{
 				ToListItems.Add(CreateViewModelFromToDoItem(item));
 			}
@@ -132,24 +145,24 @@ namespace ToDoApplication.ViewModels
 
 		}
 
-  //      private void SortName()
-		//{
-			
-		//	if(lastDirection == ListSortDirection.Ascending)
-		//	{
-		//		ToListItemsSort.SortDescriptions.Clear();
-		//		ToListItemsSort.SortDescriptions.Add(new SortDescription(nameof(ToDoItemViewModel.Name), ListSortDirection.Descending));
-		//		lastDirection = ListSortDirection.Descending;
-		//	}
-		//	else
-		//	{
-		//		ToListItemsSort.SortDescriptions.Clear();
-		//		ToListItemsSort.SortDescriptions.Add(new SortDescription(nameof(ToDoItemViewModel.Name), ListSortDirection.Ascending));
-		//		lastDirection = ListSortDirection.Ascending;
-		//	}
-		//}
+        private void SortName()
+        {
 
-		private bool FilterListItems(object obj)
+            if (lastDirection == ListSortDirection.Ascending)
+            {
+                ToListItemsSort.SortDescriptions.Clear();
+                ToListItemsSort.SortDescriptions.Add(new SortDescription(nameof(ToDoItemViewModel.Name), ListSortDirection.Descending));
+                lastDirection = ListSortDirection.Descending;
+            }
+            else
+            {
+                ToListItemsSort.SortDescriptions.Clear();
+                ToListItemsSort.SortDescriptions.Add(new SortDescription(nameof(ToDoItemViewModel.Name), ListSortDirection.Ascending));
+                lastDirection = ListSortDirection.Ascending;
+            }
+        }
+
+        private bool FilterListItems(object obj)
 		{
 			return true;
 		}

@@ -38,8 +38,8 @@ namespace ToDoApplication.Behaviors
                 listView.Loaded += (s, loadedArgs) =>
                 {
                     var childCount = VisualTreeHelper.GetChildrenCount(listView);
-                    var border = VisualTreeHelper.GetChild(listView, 0);
-                    var sv = VisualTreeHelper.GetChild(border, 0) as ScrollViewer;
+                    //var border = VisualTreeHelper.GetChild(listView, 0);
+                    var sv = VisualTreeHelper.GetChild(listView, 0) as ScrollViewer;
                     sv.ScrollChanged += OnScrollChanged;
                 };
             };

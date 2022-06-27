@@ -32,35 +32,33 @@ namespace ToDOApplication.IntegrationTest.Repositories.TodoItemRepositoryTest.Da
                 appConfigMock.Setup(s => s.TodoItemFile).Returns(todoItemTestFile);
                 var repository = CreateSut(todoItemTestFile);
                 //Act
-                var todos = await repository.GetAll();
-                //Assert
-                todos.Count.ShouldBe(2);
+                var todosResult = await repository.GetAll();
+            //Assert
+            todosResult.Value.Count.ShouldBe(2);
         }
 
         [TestMethod]
-        public void Add_FileIsEmpty_ItemIsAddedToTheFile()
+        public async Task Add_FileIsEmpty_ItemIsAddedToTheFile()
         {
             //Arrange
             //Create a unique directory for this test method
             //Copy test files to directory
             var todoItemTestFile = CopyFileTotestDir("EmptyTestFile.json");
-            var appConfigMock = new Mock<IAppConfigService>();
-            appConfigMock.Setup(s => s.TodoItemFile).Returns(todoItemTestFile);
             var repository = CreateSut(todoItemTestFile);
             //Act
-            repository.Add(CreateToDoitem("Create Integration Tests"));
+            var _ = await repository.Add(CreateToDoitem("Create Integration Tests"));
             //Assert
             File.ReadAllText(todoItemTestFile.FullName).ShouldContain("\"Name\": \"Create Integration Tests\"");
         }
 
         [TestMethod]
-        public void Remove_FileHas2TodoItems_FirstItemIsRemovedFromFile()
+        public async Task Remove_FileHas2TodoItems_FirstItemIsRemovedFromFile()
         {
             //Arrange
             var testFile = CopyFileTotestDir("GetAllTextFile.json");
             var repository = CreateSut(testFile);
             //Act
-            repository.Remove(Guid.Parse("af774bcb-4bcb-4dfa-b25b-40bedb3fff24"));
+            var _ = await repository.Remove(Guid.Parse("af774bcb-4bcb-4dfa-b25b-40bedb3fff24"));
 
             //Assert
             File.ReadAllText(testFile.FullName).ShouldNotContain("af774bcb-4bcb-4dfa-b25b-40bedb3fff24");

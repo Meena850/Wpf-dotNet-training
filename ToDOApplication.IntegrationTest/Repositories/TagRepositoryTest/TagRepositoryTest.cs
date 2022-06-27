@@ -25,7 +25,7 @@ namespace ToDOApplication.IntegrationTest.Repositories.TagRepositoryTest
             //Arrange
             //Copy test files to directory
             var tagItemTestFile = CopyFileTotestDir("GetAllTagFile.json");
-            var repository = CreateSut(tagItemTestFile);
+            var repository = CreateSut(tagItemTestFile.FullName);
             //Act
             var tagsResult = await repository.GetAll();
 
@@ -43,7 +43,7 @@ namespace ToDOApplication.IntegrationTest.Repositories.TagRepositoryTest
             var tagItemTestFile = CopyFileTotestDir("GetAllTagFile.json");
             var appConfigMock = new Mock<IAppConfigService>();
             appConfigMock.Setup(s => s.TagItemFile).Returns(tagItemTestFile);
-            var repository = CreateSut(tagItemTestFile);
+            var repository = CreateSut(tagItemTestFile.FullName);
             //Act
             repository.Add(CreateTagItem("Tag1"));
             //Assert
@@ -51,18 +51,33 @@ namespace ToDOApplication.IntegrationTest.Repositories.TagRepositoryTest
         }
 
         [TestMethod]
-        public void Remove_FileHas2TodoItems_FirstItemIsRemovedFromFile()
+        public async Task Remove_FileHas2TodoItems_FirstItemIsRemovedFromFile()
         {
             //Arrange
             var TagItemtestFile = CopyFileTotestDir("GetAllTagFile.json");
-            var repository = CreateSut(TagItemtestFile);
+            var repository = CreateSut(TagItemtestFile.FullName);
             //Act
-            repository.Remove(Guid.Parse("ce8146d2-1312-4bf0-a90b-8cd8f0106ac0"));
+            var _ = await repository.Remove(Guid.Parse("ce8146d2-1312-4bf0-a90b-8cd8f0106ac0"));
 
             //Assert
             File.ReadAllText(TagItemtestFile.FullName).ShouldNotContain("ce8146d2-1312-4bf0-a90b-8cd8f0106ac0");
 
         }
+
+        [TestMethod]
+        public async Task RemoveTag_TagWithGivenIdDoesNotExist_ReturnsError()
+        {
+            // Arrage
+            var testFile = CopyFileTotestDir("GetAllTagFile.json");
+            var tagRepo = CreateSut(testFile.FullName);
+            var tagIdThatDoesNotExist = Guid.Empty;
+            // Act
+            var removeResult = await tagRepo.Remove(tagIdThatDoesNotExist);
+
+            // Assert
+            removeResult.WasSuccessful.ShouldBeFalse();
+        }
+
 
         //[TestMethod]
         //public void settagName_TagNameisUpdated_InTagRepository()
@@ -106,10 +121,13 @@ namespace ToDOApplication.IntegrationTest.Repositories.TagRepositoryTest
 
             };
         }
-        private ITagRepository CreateSut(FileInfo filename)
+        private ITagRepository CreateSut(string testFilePath)
         {
-            var appconfig=CreateFakeConfigservice(filename);
-            return new TagRepository(appconfig);
+            var configServiceMock = new Mock<IAppConfigService>();
+
+            configServiceMock.Setup(s => s.TagItemFile).Returns(new System.IO.FileInfo(testFilePath));
+
+            return new TagRepository(configServiceMock.Object);
         }
 
         private IAppConfigService CreateFakeConfigservice(FileInfo tagItemFile)
